@@ -96,7 +96,7 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .wm .e { color: var(--rose); } .wm .d { color: var(--wine-text); } .wm .amp { color: var(--gold); font-style: italic; font-weight: 500; font-size: .85em; }
 .wm-sub { font-family: 'Cormorant Garamond', Georgia, serif; text-transform: uppercase; letter-spacing: .3em; font-size: .68rem; font-weight: 600; color: var(--gold); }
 .nav { display: flex; gap: clamp(14px, 2vw, 28px); }
-.nav a { text-decoration: none; font-size: .95rem; color: var(--ink-2); padding: 6px 0; border-bottom: 1px solid transparent; }
+.nav a { text-decoration: none; font-size: .95rem; color: var(--ink-2); padding: 6px 0; border-bottom: 1px solid transparent; white-space: nowrap; }
 .nav a:hover { color: var(--ink); border-color: var(--gold); }
 .top-tools { display: flex; align-items: center; gap: 12px; }
 .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
@@ -107,7 +107,7 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .badge { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--wine); color: var(--on-wine); font-size: .72rem; font-weight: 600; display: grid; place-items: center; font-variant-numeric: tabular-nums; }
 .menu-btn { display: none; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
 .menu-btn span { width: 18px; height: 1.5px; background: var(--ink); display: block; }
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .hide-sm { display: none; }
   .menu-btn { display: inline-flex; }
   .nav { position: absolute; left: 0; right: 0; top: 100%; background: var(--bg); border-bottom: 1px solid var(--line); flex-direction: column; gap: 0; padding: 8px clamp(16px, 4vw, 40px) 16px; display: none; box-shadow: var(--shadow); }

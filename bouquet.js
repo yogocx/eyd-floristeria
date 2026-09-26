@@ -26,7 +26,7 @@ window.Bouquet = (function () {
       return s;
     },
     tulipan(c) {
-      return `<g transform="translate(0 4)"><path d="M-10 6C-12-5-7-14 0-17C7-14 12-5 10 6Z" fill="${c[0]}" stroke="rgba(90,20,50,.18)" stroke-width=".6"/><path d="M-10 6C-9-3-5-9 0-12C5-9 9-3 10 6Z" fill="${c[1]}" opacity=".85"/><path d="M-3 6C-4-2-2-9 0-13C2-9 4-2 3 6Z" fill="${c[0]}"/></g>`;
+      return `<g transform="translate(0 4)"><path d="M-8 8C-11-4-6-15 0-19C6-15 11-4 8 8Z" fill="${c[0]}" stroke="rgba(90,20,50,.18)" stroke-width=".6"/><path d="M-8 8C-7-3-4-10 0-14C4-10 7-3 8 8Z" fill="${c[1]}" opacity=".85"/><path d="M-3 8C-4-2-2-11 0-16C2-11 4-2 3 8Z" fill="${c[0]}"/></g>`;
     },
     lirio(c) {
       let s = '';
@@ -86,24 +86,24 @@ window.Bouquet = (function () {
     const W = { peonia: 0, hortensia: 0.1, lirio: 0.2, rosa: 0.4, tulipan: 0.5, gypsophila: 0.8, eucalipto: 1 };
     stems.forEach((s) => { s.w = W[s.type] + r() * 0.35; });
     stems.sort((a, b) => a.w - b.w);
-    const R = Math.min(112, 34 + 15 * Math.sqrt(n));
-    const scale = Math.max(0.72, Math.min(1.18, 1.32 - 0.022 * n));
+    const R = Math.min(118, 40 + 17 * Math.sqrt(n));
+    const scale = Math.max(0.9, Math.min(1.5, 1.6 - 0.027 * n));
     const GA = Math.PI * (3 - Math.sqrt(5));
     const placed = stems.map((s, i) => {
       const rr = R * Math.sqrt((i + 0.5) / n), th = i * GA + r() * 0.3;
-      return { ...s, x: 150 + rr * Math.cos(th) * 1.04, y: 152 + rr * Math.sin(th) * 0.86, rot: r() * 40 - 20, s: scale * (0.9 + r() * 0.2) };
+      return { ...s, x: 150 + rr * Math.cos(th) * 1.04, y: 142 + rr * Math.sin(th) * 0.86, rot: r() * 40 - 20, s: scale * (0.9 + r() * 0.2) };
     });
     const filler = (t) => t === 'eucalipto' || t === 'gypsophila';
     const order = [...placed].sort((a, b) => (filler(b.type) - filler(a.type)) || (a.y - b.y));
-    out += `<g stroke="${OLIVE}" stroke-width="2.4" stroke-linecap="round" opacity=".95">` + placed.map((p) => `<line x1="${f1(p.x)}" y1="${f1(p.y + 6)}" x2="150" y2="262"/>`).join('') + '</g>';
-    out += `<polygon points="72,200 150,172 228,200 196,336 104,336" fill="${wc.light}"/>`;
+    out += `<g stroke="${OLIVE}" stroke-width="2.4" stroke-linecap="round" opacity=".95">` + placed.map((p) => `<line x1="${f1(p.x)}" y1="${f1(p.y + 6)}" x2="150" y2="275"/>`).join('') + '</g>';
+    out += `<polygon points="84,216 150,192 216,216 190,332 110,332" fill="${wc.light}"/>`;
     out += order.map((p) => `<g transform="translate(${f1(p.x)} ${f1(p.y)}) rotate(${p.rot | 0}) scale(${p.s.toFixed(2)})">${DRAW[p.type](palette(p.type, p.variant), r)}</g>`).join('');
-    out += `<polygon points="56,218 150,256 244,218 202,348 98,348" fill="${wc.base}"/>`;
-    out += `<polygon points="56,218 150,256 128,348 98,348" fill="${wc.dark}" opacity=".22"/>`;
-    out += `<polygon points="244,218 150,256 172,348 202,348" fill="${wc.dark}" opacity=".1"/>`;
-    out += `<polygon points="88,276 212,276 209,292 91,292" fill="${rc}"/>`;
-    out += `<g fill="${rc}"><ellipse cx="134" cy="284" rx="15" ry="8" transform="rotate(-18 134 284)"/><ellipse cx="166" cy="284" rx="15" ry="8" transform="rotate(18 166 284)"/><polygon points="146,290 138,322 146,318"/><polygon points="154,290 162,322 154,318"/><circle cx="150" cy="284" r="5.5"/></g>`;
-    out += `<g stroke="${OLIVE}" stroke-width="2.2" stroke-linecap="round"><line x1="140" y1="348" x2="136" y2="364"/><line x1="150" y1="348" x2="150" y2="366"/><line x1="160" y1="348" x2="164" y2="364"/></g>`;
+    out += `<polygon points="68,236 150,268 232,236 198,346 102,346" fill="${wc.base}"/>`;
+    out += `<polygon points="68,236 150,268 130,346 102,346" fill="${wc.dark}" opacity=".22"/>`;
+    out += `<polygon points="232,236 150,268 170,346 198,346" fill="${wc.dark}" opacity=".1"/>`;
+    out += `<polygon points="92,288 208,288 205,304 95,304" fill="${rc}"/>`;
+    out += `<g fill="${rc}"><ellipse cx="134" cy="296" rx="15" ry="8" transform="rotate(-18 134 296)"/><ellipse cx="166" cy="296" rx="15" ry="8" transform="rotate(18 166 296)"/><polygon points="146,302 138,334 146,330"/><polygon points="154,302 162,334 154,330"/><circle cx="150" cy="296" r="5.5"/></g>`;
+    out += `<g stroke="${OLIVE}" stroke-width="2.2" stroke-linecap="round"><line x1="140" y1="346" x2="136" y2="362"/><line x1="150" y1="346" x2="150" y2="364"/><line x1="160" y1="346" x2="164" y2="362"/></g>`;
     return out + '</svg>';
   }
 
