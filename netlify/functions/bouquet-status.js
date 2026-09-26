@@ -9,8 +9,11 @@ exports.handler = async (event) => {
     if ((event.queryStringParameters || {}).diag === '1' && enabled) {
       try {
         const r = await fetch('https://api.openai.com/v1/models/gpt-image-1', { headers: { authorization: 'Bearer ' + apiKey() } });
-        const d = await r.json().catch(() => ({}));
-        return json(200, { enabled, openai: r.status, message: r.ok ? 'ok' : ((d.error && d.error.message) || 'error') });
+        const txt = await r.text(); let d = {}; try { d = JSON.parse(txt); } catch (e) { /* no JSON */ }
+        const msg = (d.error && (d.error.message || d.error.code)) || txt.slice(0, 200) || 'error';
+        // Una clave restringida solo a imágenes no puede listar modelos (403 api.model.read) y aun así genera bien.
+        const restricted = r.status === 403 && /api\.model\.read/.test(msg);
+        return json(200, { enabled, openai: r.status, message: r.ok ? 'ok' : restricted ? 'ok (clave restringida a imágenes)' : msg });
       } catch (e) { return json(200, { enabled, openai: 0, message: String(e.message || e) }); }
     }
     return json(200, { enabled });
