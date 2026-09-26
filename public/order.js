@@ -207,8 +207,28 @@
     let w = 0, h = 0, P = [], raf = 0, visible = true;
     const cols = ['#E48BA5', '#F3C3D0', '#C9386A', '#E2C889', '#F7E6D8'];
     function size() { const r = c.getBoundingClientRect(); w = c.width = Math.floor(r.width * dpr); h = c.height = Math.floor(r.height * dpr); }
-    function mk(init) { return { x: Math.random() * w, y: init ? Math.random() * h : -20 * dpr, r: (5 + Math.random() * 8) * dpr, a: Math.random() * 6.28, va: (Math.random() - 0.5) * 0.02, vy: (0.25 + Math.random() * 0.4) * dpr, vx: (Math.random() - 0.5) * 0.3 * dpr, ph: Math.random() * 6.28, col: cols[Math.floor(Math.random() * cols.length)], al: 0.3 + Math.random() * 0.35 }; }
-    function draw() { ctx.clearRect(0, 0, w, h); for (const p of P) { ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.globalAlpha = p.al; ctx.fillStyle = p.col; ctx.beginPath(); ctx.ellipse(0, 0, p.r, p.r * 0.55, 0, 0, 6.283); ctx.fill(); ctx.restore(); } }
+    const cols2 = ['#F3C3D0', '#FBE6EC', '#E48BA5', '#F7E6D8', '#FFFFFF'];
+    function mk(init) { const i = Math.floor(Math.random() * cols.length); return { x: Math.random() * w, y: init ? Math.random() * h : -24 * dpr, r: (7 + Math.random() * 9) * dpr, k: 0.55 + Math.random() * 0.4, a: Math.random() * 6.28, va: (Math.random() - 0.5) * 0.02, vy: (0.25 + Math.random() * 0.4) * dpr, vx: (Math.random() - 0.5) * 0.3 * dpr, ph: Math.random() * 6.28, col: cols[i], col2: cols2[i], al: 0.35 + Math.random() * 0.35 }; }
+    function petal(r, k) {
+      // silueta de pétalo: base en punta, cuerpo ancho y una leve muesca en el extremo
+      ctx.beginPath();
+      ctx.moveTo(0, r);
+      ctx.bezierCurveTo(-r * 0.95 * k, r * 0.35, -r * 0.9 * k, -r * 0.75, -r * 0.12, -r * 0.92);
+      ctx.quadraticCurveTo(0, -r * 0.78, r * 0.12, -r * 0.92);
+      ctx.bezierCurveTo(r * 0.9 * k, -r * 0.75, r * 0.95 * k, r * 0.35, 0, r);
+      ctx.closePath();
+    }
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of P) {
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.globalAlpha = p.al;
+        const gr = ctx.createLinearGradient(0, -p.r, 0, p.r); gr.addColorStop(0, p.col); gr.addColorStop(1, p.col2);
+        ctx.fillStyle = gr; petal(p.r, p.k); ctx.fill();
+        ctx.globalAlpha = p.al * 0.5; ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = Math.max(0.6, 0.8 * dpr);
+        ctx.beginPath(); ctx.moveTo(0, p.r * 0.9); ctx.quadraticCurveTo(p.r * 0.08, 0, 0, -p.r * 0.7); ctx.stroke();
+        ctx.restore();
+      }
+    }
     function step() { for (const p of P) { p.y += p.vy; p.ph += 0.01; p.x += p.vx + Math.sin(p.ph) * 0.4 * dpr; p.a += p.va; if (p.y > h + 30) Object.assign(p, mk(false)); } draw(); raf = visible ? requestAnimationFrame(step) : 0; }
     size(); P = Array.from({ length: 18 }, () => mk(true));
     addEventListener('resize', size);

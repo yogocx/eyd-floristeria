@@ -1,7 +1,27 @@
-# Static site: no build step. Netlify serves the repo root.
+# Sitio estático en /public. Las funciones (generación de imágenes con OpenAI) viven en /netlify/functions.
 [build]
-  publish = "."
-  command = ""
+  publish = "public"
+  command = "npm install"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Rutas limpias para las funciones
+[[redirects]]
+  from = "/api/bouquet-status"
+  to = "/.netlify/functions/bouquet-status"
+  status = 200
+
+[[redirects]]
+  from = "/api/bouquet-image"
+  to = "/.netlify/functions/bouquet-image"
+  status = 200
+
+[[redirects]]
+  from = "/api/bouquet-generate"
+  to = "/.netlify/functions/bouquet-generate-background"
+  status = 200
 
 [[headers]]
   for = "/assets/*"

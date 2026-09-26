@@ -2,3 +2,4 @@
 .DS_Store
 .netlify/
 _review/
+node_modules/

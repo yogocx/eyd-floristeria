@@ -203,6 +203,61 @@ window.App = (function () {
     $('#msgCount').textContent = (b().msg || '').length;
     saveBuilder();
   }
+  /* ---------- Foto generada con IA (funciones Netlify + OpenAI) ---------- */
+  const gen = { enabled: false, cache: {}, canon: '', timer: 0, started: 0 };
+  const canonOf = (spec) => JSON.stringify({ items: spec.items.map((i) => ({ type: i.type, n: Math.min(i.n, 12), variant: i.variant })).sort((x, y) => x.type.localeCompare(y.type) || String(x.variant).localeCompare(String(y.variant))), wrap: spec.wrap, ribbon: spec.ribbon });
+  async function genPost(url, spec) { const r = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ spec }) }); if (url.indexOf('generate') > -1) return { ok: r.ok }; return r.ok ? r.json() : { status: 'error', error: 'http' }; }
+  async function genInit() {
+    try { const r = await fetch('/api/bouquet-status', { cache: 'no-store' }); if (r.ok) { const j = await r.json(); gen.enabled = !!j.enabled; } } catch (e) { gen.enabled = false; }
+    $('#genBox').hidden = !gen.enabled;
+    if (gen.enabled) genSync();
+  }
+  const genEntry = () => gen.cache[gen.canon];
+  function genUrl(c) { return '/api/bouquet-image?key=' + c.key; }
+  function genUI() {
+    const c = genEntry(), btn = $('#genBtn'), prog = $('#genProgress'), hint = $('#genHint'), stage = $('#stage');
+    const pending = c && c.status === 'pending';
+    btn.hidden = !!(c && (c.status === 'ready' || pending)); hint.hidden = btn.hidden;
+    prog.hidden = !pending; stage.classList.toggle('generating', !!pending);
+    if (pending) $('#genMsg').textContent = t('b_gen_wait', { s: Math.round((Date.now() - (c.started || Date.now())) / 1000) });
+    if (c && c.status === 'error') { hint.textContent = t(c.error === 'daily-limit' ? 'b_gen_limit' : 'b_gen_err'); hint.hidden = false; }
+    else hint.textContent = t('b_gen_hint');
+  }
+  async function genSync() {
+    if (!gen.enabled) return;
+    const spec = builderSpec(); if (!spec.items.length) return;
+    const canon = gen.canon; const c = gen.cache[canon];
+    if (c && c.status === 'ready') { genUI(); return; }
+    const j = await genPost('/api/bouquet-status', spec);
+    if (canon !== gen.canon) return;
+    if (j.status === 'ready') { gen.cache[canon] = { key: j.key, status: 'ready' }; updateBuilder(); }
+    else if (j.status === 'pending') { gen.cache[canon] = Object.assign({ started: Date.now() }, c || {}, { key: j.key, status: 'pending' }); genPoll(); }
+    else if (j.status === 'error') { gen.cache[canon] = { key: j.key, status: 'error', error: j.error }; }
+    genUI();
+  }
+  function genPoll() {
+    clearTimeout(gen.timer);
+    gen.timer = setTimeout(async () => {
+      const canon = gen.canon, c = gen.cache[canon]; if (!c || c.status !== 'pending') return;
+      if (Date.now() - c.started > 110000) { gen.cache[canon] = { key: c.key, status: 'error', error: 'timeout' }; genUI(); return; }
+      const j = await genPost('/api/bouquet-status', builderSpec());
+      if (canon !== gen.canon) return;
+      if (j.status === 'ready') { gen.cache[canon] = { key: j.key, status: 'ready' }; updateBuilder(); }
+      else if (j.status === 'error') { gen.cache[canon] = { key: j.key, status: 'error', error: j.error }; genUI(); }
+      else { genUI(); genPoll(); }
+    }, 2500);
+  }
+  async function genStart() {
+    if (!gen.enabled) return;
+    const spec = builderSpec(); if (!spec.items.length) return;
+    const canon = gen.canon;
+    gen.cache[canon] = { key: null, status: 'pending', started: Date.now() }; genUI();
+    const r = await genPost('/api/bouquet-generate', spec);
+    if (canon !== gen.canon) return;
+    if (!r.ok) { gen.cache[canon] = { key: null, status: 'error', error: 'http' }; genUI(); return; }
+    genPoll();
+  }
+
   let stageReady = false, stageActive = 0;
   function ensureStage() {
     const stage = $('#stage');
@@ -215,19 +270,24 @@ window.App = (function () {
     const stage = ensureStage(), empty = $('#stageEmpty'), strip = $('#stageStrip');
     if (!tot.stems) { stage.classList.add('is-empty'); empty.hidden = false; empty.textContent = t('b_empty'); strip.innerHTML = ''; return; }
     stage.classList.remove('is-empty'); empty.hidden = true;
+    const spec = builderSpec(), canon = canonOf(spec);
+    if (canon !== gen.canon) { gen.canon = canon; clearTimeout(gen.timer); if (gen.enabled) genSync(); }
+    const g = genEntry(), ready = g && g.status === 'ready';
     const e = previewEntry();
-    if (e) {
+    const src = ready ? genUrl(g) : (e ? e.img : ''), label = ready ? t('b_gen_ready') : (e ? t('b_ref') + ' · ' + L(e.cap) : '');
+    if (src) {
       const cur = $('#stagePhoto' + stageActive);
-      if (cur.getAttribute('src') !== e.img) {
+      if (cur.getAttribute('src') !== src) {
         const next = $('#stagePhoto' + (1 - stageActive));
-        next.alt = t('b_ref') + ': ' + L(e.cap);
+        next.alt = label;
         next.onload = () => { next.classList.add('on'); cur.classList.remove('on'); };
-        next.src = e.img;
+        next.src = src;
         if (next.complete && next.naturalWidth) next.onload();
         stageActive = 1 - stageActive;
-      } else { cur.alt = t('b_ref') + ': ' + L(e.cap); }
-      $('#stageTag').textContent = t('b_ref') + ' · ' + L(e.cap);
+      } else { cur.alt = label; }
+      const tag = $('#stageTag'); tag.textContent = label; tag.classList.toggle('gen-tag', !!ready);
     }
+    genUI();
     const c = b().counts;
     const types = Object.keys(D.FLOWERS).filter((k) => c[k] > 0).sort((x, y) => (c[y] - c[x]) || (FOCAL[x] - FOCAL[y]));
     strip.innerHTML = `<span class="strip-lbl">${esc(t('b_yours'))}</span>` + types.map((k) => `<figure class="chip-f"><img src="${photoFor(k, b().variants[k])}" alt=""><figcaption>×${c[k]} ${esc(L(D.FLOWERS[k].name))}</figcaption></figure>`).join('');
@@ -253,7 +313,8 @@ window.App = (function () {
   function clearBuilder() { Object.keys(D.FLOWERS).forEach((k) => { b().counts[k] = 0; }); b().extras = ['tarjeta']; b().msg = ''; renderBuilder(); }
   function addCustom() {
     const tot = builderTotals(); if (!tot.stems) return;
-    addToCart({ pid: null, qty: 1, unit: tot.total, size: null, spec: builderSpec(), photo: previewPhoto(), custom: { counts: Object.assign({}, b().counts), variants: Object.assign({}, b().variants), wrap: b().wrap, ribbon: b().ribbon, extras: b().extras.slice(), msg: b().msg } });
+    const g = genEntry();
+    addToCart({ pid: null, qty: 1, unit: tot.total, size: null, spec: builderSpec(), photo: (g && g.status === 'ready') ? genUrl(g) : previewPhoto(), custom: { counts: Object.assign({}, b().counts), variants: Object.assign({}, b().variants), wrap: b().wrap, ribbon: b().ribbon, extras: b().extras.slice(), msg: b().msg } });
   }
 
   /* ---------- Idioma ---------- */
@@ -315,6 +376,8 @@ window.App = (function () {
     $('#surpriseBtn').addEventListener('click', surprise);
     $('#clearBtn').addEventListener('click', clearBuilder);
     $('#addCustomBtn').addEventListener('click', addCustom);
+    $('#genBtn').addEventListener('click', genStart);
+    genInit();
   }
 
   return { $, $$, state, store, t, L, esc, money, toast, applyI18n, wire, renderAll, saveCart, itemName, itemThumb, itemDetail, specSummary, loadSpec };

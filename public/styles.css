@@ -222,6 +222,14 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .pv-detail { font-size: .85rem; color: var(--ink-3); margin-top: 4px; }
 .pv-price { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2rem; font-weight: 600; color: var(--wine-text); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .pv-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.gen { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px dashed var(--gold); border-radius: 14px; background: var(--gold-soft); }
+.gen .btn { align-self: flex-start; }
+.gen-progress { display: flex; align-items: center; gap: 10px; font-size: .9rem; color: var(--ink-2); }
+.spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--wine); animation: spin .9s linear infinite; flex: 0 0 16px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.stage.generating::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.28) 50%, transparent 70%); background-size: 220% 100%; animation: shimmer 1.6s linear infinite; pointer-events: none; }
+@keyframes shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+.stage-tag.gen-tag { background: var(--wine); }
 .steps { display: flex; flex-direction: column; gap: 30px; }
 .step h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; font-weight: 600; margin: 0 0 12px; display: flex; align-items: baseline; gap: 10px; }
 .step h3 .n { font-family: 'Great Vibes', cursive; color: var(--gold); font-size: 1.7rem; font-weight: 400; }

@@ -161,6 +161,11 @@
             </div>
             <div class="pv-price" id="pvPrice">$0</div>
           </div>
+          <div class="gen" id="genBox" hidden>
+            <button type="button" class="btn btn-gold" id="genBtn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4Z"/><path d="M19 15l.8 2 2.2.7-2.2.7-.8 2-.8-2-2.2-.7 2.2-.7Z"/></svg><span data-t="b_gen">Generar foto de mi ramo</span></button>
+            <p class="hint" id="genHint" data-t="b_gen_hint">Creamos una imagen fotorrealista de tu selección exacta. Tarda unos 20 segundos.</p>
+            <div class="gen-progress" id="genProgress" hidden><span class="spinner" aria-hidden="true"></span><span id="genMsg" role="status" aria-live="polite"></span></div>
+          </div>
           <div class="pv-actions">
             <button type="button" class="btn btn-outline btn-sm" id="surpriseBtn" data-t="b_surprise">Sorpréndeme</button>
             <button type="button" class="btn btn-ghost btn-sm" id="clearBtn" data-t="b_clear">Empezar de nuevo</button>
