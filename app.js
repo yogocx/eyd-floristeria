@@ -73,7 +73,7 @@ window.App = (function () {
     const names = Array.from(new Set(p.spec.items.map((i) => L(D.FLOWERS[i.type].name)))).join(' · ');
     return `<article class="card" data-id="${p.id}">
       <button type="button" class="fav" data-act="fav" aria-pressed="${fav}" aria-label="${esc(t(fav ? 'card_unfav' : 'card_fav'))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-4-3-8-6.5-8-11a4 4 0 0 1 7-2.6A4 4 0 0 1 20 10c0 4.5-4 8-8 11Z"/></svg></button>
-      <div class="art" data-act="view" role="button" tabindex="0" aria-label="${esc(t('card_view'))}: ${esc(L(p.name))}">${B.svg(p.spec, L(p.name))}</div>
+      <div class="art${p.img ? ' has-img' : ''}" data-act="view" role="button" tabindex="0" aria-label="${esc(t('card_view'))}: ${esc(L(p.name))}">${p.img ? `<img src="${p.img}" alt="${esc(L(p.name))}" loading="lazy" width="900" height="1125">` : B.svg(p.spec, L(p.name))}</div>
       <div class="body">
         <h3 class="name display">${esc(L(p.name))}</h3>
         <p class="meta">${esc(names)} · ${B.count(p.spec)} ${esc(t('stems'))}</p>
@@ -114,6 +114,7 @@ window.App = (function () {
     if (window.Order) window.Order.openDrawer();
   }
   function itemName(item) { return item.pid ? L(D.PRODUCTS.find((p) => p.id === item.pid).name) : t('custom_name'); }
+  function itemThumb(item) { const p = item.pid ? D.PRODUCTS.find((x) => x.id === item.pid) : null; return p && p.img ? `<img src="${p.img}" alt="">` : B.svg(item.spec, ''); }
   function itemDetail(item) {
     if (item.pid) return t('size_' + item.size) + ' · ' + B.count(item.spec) + ' ' + t('stems');
     const c = item.custom;
@@ -132,7 +133,7 @@ window.App = (function () {
   function qvUnit() { return Math.round(qvProduct().price * D.SIZES[state.qv.size]); }
   function renderQV() {
     const p = qvProduct(); if (!p) return;
-    $('#qvArt').innerHTML = B.svg(p.spec, L(p.name));
+    $('#qvArt').innerHTML = p.img ? `<img src="${p.img}" alt="${esc(L(p.name))}">` : B.svg(p.spec, L(p.name));
     $('#qvOcc').textContent = p.occ.map((o) => t('occ_' + o)).join(' · ');
     $('#qvName').textContent = L(p.name);
     $('#qvDesc').textContent = L(p.desc);
@@ -275,5 +276,5 @@ window.App = (function () {
     $('#addCustomBtn').addEventListener('click', addCustom);
   }
 
-  return { $, $$, state, store, t, L, esc, money, toast, applyI18n, wire, renderAll, saveCart, itemName, itemDetail, specSummary, loadSpec };
+  return { $, $$, state, store, t, L, esc, money, toast, applyI18n, wire, renderAll, saveCart, itemName, itemThumb, itemDetail, specSummary, loadSpec };
 })();

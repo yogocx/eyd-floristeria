@@ -47,7 +47,7 @@
       $('#cartBrowse').addEventListener('click', closeDrawer);
     } else {
       items.innerHTML = state.cart.map((i) => `<div class="citem" data-uid="${i.uid}">
-        <div class="th">${B.svg(i.spec, '')}</div>
+        <div class="th">${A.itemThumb(i)}</div>
         <div class="ci-body">
           <div class="ci-name">${esc(A.itemName(i))}</div>
           <div class="ci-detail">${esc(A.itemDetail(i))}</div>
@@ -140,7 +140,7 @@
 
   /* ---------- Portafolio, proceso, servicios ---------- */
   function renderPortfolio() {
-    $('#pfTrack').innerHTML = D.PORTFOLIO.map((p) => `<figure class="pf-card"><div class="pf-art">${B.svg(p.spec, L(p.title))}</div><figcaption><span class="pf-title display">${esc(L(p.title))}</span><span class="pf-place">${esc(L(p.place))}</span></figcaption></figure>`).join('');
+    $('#pfTrack').innerHTML = D.PORTFOLIO.map((p) => `<figure class="pf-card"><div class="pf-art">${p.img ? `<img src="${p.img}" alt="${esc(L(p.title))}" loading="lazy" width="900" height="1125">` : B.svg(p.spec, L(p.title))}</div><figcaption><span class="pf-title display">${esc(L(p.title))}</span><span class="pf-place">${esc(L(p.place))}</span></figcaption></figure>`).join('');
   }
   function renderProcess() {
     $('#process').innerHTML = D.PROCESS.map((s, i) => `<li class="pstep"><span class="pnum script">${i + 1}</span><h3 class="display">${esc(L(s.t))}</h3><p>${esc(L(s.p))}</p></li>`).join('');

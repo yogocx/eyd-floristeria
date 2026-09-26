@@ -118,9 +118,11 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 
 /* Hero */
 .hero { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--dark) 0%, var(--dark-2) 100%); color: var(--on-dark); padding-block: clamp(40px, 7vw, 80px) 0; }
-.hero::before { content: ""; position: absolute; inset: auto -20% -40% -20%; height: 70%; background: radial-gradient(60% 60% at 50% 100%, rgba(228,139,165,.28), transparent 70%); pointer-events: none; }
-#petals { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.hero-in { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; }
+.hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; opacity: .34; filter: saturate(.85); z-index: 0; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(180deg, rgba(42,21,32,.55) 0%, rgba(42,21,32,.62) 55%, var(--dark-2) 100%); pointer-events: none; }
+.hero::after { content: ""; position: absolute; inset: auto -20% -40% -20%; height: 70%; z-index: 0; background: radial-gradient(60% 60% at 50% 100%, rgba(228,139,165,.28), transparent 70%); pointer-events: none; }
+#petals { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.hero-in { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; }
 .logo-plate { width: min(280px, 60vw); aspect-ratio: 1; max-width: 100%; border-radius: 50%; background: #FBF4F1; box-shadow: 0 0 0 10px rgba(255,255,255,.06), 0 30px 60px -30px rgba(0,0,0,.6); overflow: hidden; margin-bottom: 6px; }
 .logo-plate img { width: 100%; height: 100%; object-fit: cover; }
 .hero-eyebrow { margin-top: 4px; }
@@ -128,7 +130,7 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .hero .lead { color: var(--on-dark-2); max-width: 58ch; }
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 8px; }
 .hero .btn-ghost { color: var(--on-dark); }
-.trust { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; margin-top: clamp(36px, 5vw, 56px); padding-block: 18px; border-top: 1px solid var(--line-dark); color: var(--on-dark-2); font-size: .92rem; }
+.trust { position: relative; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; margin-top: clamp(36px, 5vw, 56px); padding-block: 18px; border-top: 1px solid var(--line-dark); color: var(--on-dark-2); font-size: .92rem; }
 .trust-item { display: inline-flex; align-items: center; gap: 10px; }
 .trust-item svg { width: 20px; height: 20px; fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -158,11 +160,10 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 @media (max-width: 800px) { .split { grid-template-columns: 1fr; } }
 .split-card { display: grid; grid-template-rows: auto 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; }
-.split-art { aspect-ratio: 16 / 10; max-width: 100%; position: relative; overflow: hidden; }
-.split-art[data-art="boda"] { background: radial-gradient(70% 90% at 30% 80%, #F6C9D5, transparent 60%), radial-gradient(60% 80% at 80% 20%, #F8E9DD, transparent 60%), linear-gradient(160deg, #FBE6EC, #EFA6BC); }
-.split-art[data-art="corp"] { background: radial-gradient(70% 90% at 70% 80%, #7B1236, transparent 60%), radial-gradient(50% 60% at 20% 20%, #C39B4E55, transparent 60%), linear-gradient(160deg, #3A1D2B, #2A1520); }
-.split-art::after { content: ""; position: absolute; inset: 14px; border: 1px solid rgba(195,155,78,.55); border-radius: 14px; }
-.split-art::before { content: "♡"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 3rem; color: rgba(195,155,78,.7); font-family: 'Cormorant Garamond', serif; }
+.split-art { aspect-ratio: 16 / 10; max-width: 100%; position: relative; overflow: hidden; background: var(--surface-2); }
+.split-art img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+.split-card:hover .split-art img { transform: scale(1.03); }
+.split-art::after { content: ""; position: absolute; inset: 14px; border: 1px solid rgba(255,255,255,.55); border-radius: 14px; pointer-events: none; }
 .split-body { padding: 26px 28px 30px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
 .split-body p { color: var(--ink-2); }
 
@@ -185,6 +186,9 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .card .art { aspect-ratio: 5 / 6; max-width: 100%; background: radial-gradient(120% 90% at 50% 100%, var(--rose-3), var(--surface-2) 70%); display: grid; place-items: center; padding: 8% 10% 4%; cursor: zoom-in; }
 .card .art svg { width: 100%; height: 100%; filter: drop-shadow(0 14px 14px rgba(120,30,70,.16)); }
+.card .art.has-img { padding: 0; }
+.card .art img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }
+.card:hover .art img { transform: scale(1.04); }
 .card .body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .card .name { font-size: 1.45rem; }
 .card .meta { font-size: .85rem; color: var(--ink-3); }
@@ -252,7 +256,9 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .car-nav { display: flex; gap: 8px; }
 .pf-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: thin; scrollbar-color: var(--gold) transparent; }
 .pf-card { flex: 0 0 min(300px, 78vw); scroll-snap-align: start; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-.pf-art { aspect-ratio: 4 / 5; max-width: 100%; border-radius: 18px; background: radial-gradient(120% 90% at 50% 100%, rgba(228,139,165,.25), rgba(255,255,255,.04) 70%); border: 1px solid var(--line-dark); display: grid; place-items: center; padding: 8% 10% 4%; }
+.pf-art { aspect-ratio: 4 / 5; max-width: 100%; border-radius: 18px; background: radial-gradient(120% 90% at 50% 100%, rgba(228,139,165,.25), rgba(255,255,255,.04) 70%); border: 1px solid var(--line-dark); display: grid; place-items: center; overflow: hidden; }
+.pf-art img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+.pf-card:hover .pf-art img { transform: scale(1.03); }
 .pf-art svg { width: 100%; height: 100%; filter: drop-shadow(0 16px 18px rgba(0,0,0,.35)); }
 .pf-card figcaption { display: flex; flex-direction: column; gap: 2px; }
 .pf-title { font-size: 1.35rem; }
@@ -341,6 +347,7 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .citem { display: grid; grid-template-columns: 64px 1fr auto; gap: 12px; align-items: start; }
 .citem .th { width: 64px; height: 76px; border-radius: 12px; background: var(--surface-2); display: grid; place-items: center; padding: 4px; }
 .citem .th svg { width: 100%; height: 100%; }
+.citem .th img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
 .ci-name { font-weight: 500; }
 .ci-detail { font-size: .8rem; color: var(--ink-3); line-height: 1.4; }
 .ci-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 8px; }
@@ -356,7 +363,8 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .qv[open] { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
 @media (max-width: 700px) { .qv[open] { grid-template-columns: 1fr; max-height: calc(100vh - 32px); overflow: auto; } }
 .qv-close { position: absolute; top: 12px; right: 12px; z-index: 2; }
-.qv-art { background: radial-gradient(120% 90% at 50% 100%, var(--rose-3), var(--surface-2) 70%); display: grid; place-items: center; padding: 10% 12% 4%; min-height: 280px; }
+.qv-art { background: radial-gradient(120% 90% at 50% 100%, var(--rose-3), var(--surface-2) 70%); display: grid; place-items: center; min-height: 320px; overflow: hidden; }
+.qv-art img { width: 100%; height: 100%; object-fit: cover; }
 .qv-art svg { width: 100%; height: 100%; max-height: 460px; filter: drop-shadow(0 16px 18px rgba(120,30,70,.18)); }
 .qv-body { padding: clamp(20px, 3vw, 34px); display: flex; flex-direction: column; gap: 12px; }
 .qv-body h3 { font-size: 2rem; }
