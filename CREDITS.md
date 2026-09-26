@@ -31,3 +31,17 @@ Fotografías de muestra tomadas de [Pexels](https://www.pexels.com) bajo la [lic
 | assets/img/b-tulipan-amarillo.jpg | https://www.pexels.com/photo/33340747/ |
 | assets/img/b-hortensia-blanco.jpg | https://www.pexels.com/photo/18703645/ |
 | assets/img/b-filler.jpg | https://www.pexels.com/photo/19843318/ |
+
+## Recortes de flores para la vista 3D del taller (`assets/flowers/`)
+
+Fotos de Pexels con el fondo eliminado. Las flores blancas se tiñen en pantalla según el tono elegido.
+
+| Archivo | Fuente |
+| --- | --- |
+| peonia.png | https://www.pexels.com/photo/17568255/ |
+| rosa.png | https://www.pexels.com/photo/9080009/ |
+| tulipan.png | https://www.pexels.com/photo/16705603/ |
+| lirio.png | https://www.pexels.com/photo/36519815/ |
+| hortensia.png | https://www.pexels.com/photo/8126795/ |
+| eucalipto.png | https://www.pexels.com/photo/4135633/ |
+| gypsophila.png | https://www.pexels.com/photo/20304134/ |

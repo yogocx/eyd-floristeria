@@ -13,7 +13,7 @@ Sitio interactivo de una página para **E&D Floristería** ("Flores que enamoran
 | `styles.css` | Estilos, tema claro y oscuro, paleta tomada del logotipo. |
 | `data.js` | **CONFIG** (datos del negocio), traducciones ES/EN, catálogo, flores, precios, servicios, testimonios y preguntas frecuentes. |
 | `bouquet.js` | Dibuja los ramos en SVG (miniaturas del taller y respaldo sin WebGL). |
-| `bouquet3d.js` | Vista 3D del taller con three.js: flores, tallos, papel y listón generados según la selección. |
+| `bouquet3d.js` | Vista 3D del taller con three.js: recortes fotográficos de flores reales (`assets/flowers/`) sobre una cúpula, con papel, listón y tallos generados según la selección. |
 | `app.js` | Idioma, colección con filtros, vista rápida y taller "Arma tu ramo". |
 | `order.js` | Carrito, pedido por WhatsApp, contacto, portafolio, testimonios, FAQ y pétalos. |
 | `assets/logo.webp` | Logotipo oficial. |
