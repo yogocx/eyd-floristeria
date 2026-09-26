@@ -99,9 +99,11 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .nav a { text-decoration: none; font-size: .95rem; color: var(--ink-2); padding: 6px 0; border-bottom: 1px solid transparent; white-space: nowrap; }
 .nav a:hover { color: var(--ink); border-color: var(--gold); }
 .top-tools { display: flex; align-items: center; gap: 12px; }
-.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
-.lang button { border: 0; background: transparent; padding: 5px 10px; font-size: .78rem; letter-spacing: .08em; color: var(--ink-3); }
-.lang button[aria-pressed="true"] { background: var(--wine); color: var(--on-wine); }
+.lang { display: inline-flex; align-items: center; gap: 3px; font-family: 'Jost', system-ui, sans-serif; font-size: .88rem; letter-spacing: .1em; font-weight: 600; }
+.lang button { border: 0; background: transparent; padding: 4px 3px; color: var(--ink-3); border-radius: 4px; font-weight: 600; }
+.lang button:hover { color: var(--ink); }
+.lang button[aria-pressed="true"] { color: var(--wine-text); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--gold); }
+.lang i { font-style: normal; color: var(--ink-3); }
 .cart-btn { position: relative; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink); display: grid; place-items: center; }
 .cart-btn:hover { border-color: var(--gold); }
 .badge { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--wine); color: var(--on-wine); font-size: .72rem; font-weight: 600; display: grid; place-items: center; font-variant-numeric: tabular-nums; }
