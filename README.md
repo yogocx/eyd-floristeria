@@ -12,8 +12,7 @@ Sitio interactivo de una página para **E&D Floristería** ("Flores que enamoran
 | `index.html` | Estructura de la página (español por defecto, con textos traducibles). |
 | `styles.css` | Estilos, tema claro y oscuro, paleta tomada del logotipo. |
 | `data.js` | **CONFIG** (datos del negocio), traducciones ES/EN, catálogo, flores, precios, servicios, testimonios y preguntas frecuentes. |
-| `bouquet.js` | Dibuja los ramos en SVG (miniaturas del taller y respaldo sin WebGL). |
-| `bouquet3d.js` | Vista 3D del taller con three.js: recortes fotográficos de flores reales (`assets/flowers/`) sobre una cúpula, con papel, listón y tallos generados según la selección. |
+| `bouquet.js` | Dibujo SVG de respaldo para miniaturas del carrito sin foto. |
 | `app.js` | Idioma, colección con filtros, vista rápida y taller "Arma tu ramo". |
 | `order.js` | Carrito, pedido por WhatsApp, contacto, portafolio, testimonios, FAQ y pétalos. |
 | `assets/logo.webp` | Logotipo oficial. |
@@ -32,7 +31,7 @@ Edita el bloque `CONFIG` al inicio de `data.js`:
 - `baseFee`, `freeDeliveryFrom`, `cutoffHour`, `closedDays`, `hours`, `stats`
 - Zonas y tarifas de entrega en `ZONES`; precios por tallo en `FLOWERS`; catálogo en `PRODUCTS`
 
-Los testimonios, cifras y precios incluidos son ejemplos. Las fotografías son de muestra (Pexels, ver `CREDITS.md`); cada ramo del catálogo toma su imagen del campo `img` en `PRODUCTS`, y el portafolio del campo `img` en `PORTFOLIO`. La vista previa del taller "Arma tu ramo" se dibuja en vivo según lo que elige el cliente.
+Los testimonios, cifras y precios incluidos son ejemplos. Las fotografías son de muestra (Pexels, ver `CREDITS.md`); cada ramo del catálogo toma su imagen del campo `img` en `PRODUCTS`, y el portafolio del campo `img` en `PORTFOLIO`. La vista previa del taller "Arma tu ramo" muestra la fotografía real de ramo que mejor coincide con la flor dominante, su tono y el papel (lista `BOUQUET_PHOTOS` en `data.js`); cuantas más fotos propias se agreguen ahí, más exacta será.
 
 ## Desplegar
 

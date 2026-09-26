@@ -57,7 +57,7 @@ window.EYD = (function () {
       b_eyebrow: 'Arma tu ramo', b_title: 'Tu ramo, tallo por tallo', b_lead: 'Elige flores, papel y listón. La vista previa y el precio cambian al instante.',
       b_step1: 'Elige tus flores', b_step2: 'Papel', b_step3: 'Listón', b_step4: 'Extras', b_msg: 'Mensaje para la tarjeta', b_msgph: 'Escribe algo bonito…',
       b_surprise: 'Sorpréndeme', b_clear: 'Empezar de nuevo', b_add: 'Agregar al carrito', b_hint: 'Precio final confirmado por WhatsApp según disponibilidad del día.',
-      b_empty: 'Agrega al menos un tallo para ver tu ramo.', b_ref: 'Foto de referencia', b_sketch: 'Boceto de tu mezcla', b_drag: 'Arrastra para girar', b_perstem: 'por tallo', b_base: 'Armado y papel', b_tone: 'Tono',
+      b_empty: 'Agrega al menos un tallo para ver tu ramo.', b_ref: 'Ramo de referencia', b_yours: 'Lo que lleva tu ramo', b_perstem: 'por tallo', b_base: 'Armado y papel', b_tone: 'Tono',
       size_peq: 'Ramo pequeño', size_med: 'Ramo mediano', size_gra: 'Ramo grande', size_del: 'Ramo deluxe', custom_name: 'Ramo personalizado',
       included: 'Incluida', paper: 'papel', ribbon: 'listón', extras: 'extras', card: 'tarjeta',
       pf_eyebrow: 'Portafolio', pf_title: 'Algunos de nuestros trabajos', pf_note: 'Fotografías de muestra para ilustrar cada tipo de proyecto. Se sustituyen por el portafolio real al publicar.',
@@ -104,7 +104,7 @@ window.EYD = (function () {
       b_eyebrow: 'Build your bouquet', b_title: 'Your bouquet, stem by stem', b_lead: 'Pick flowers, paper and ribbon. Preview and price update as you go.',
       b_step1: 'Choose your flowers', b_step2: 'Wrapping paper', b_step3: 'Ribbon', b_step4: 'Extras', b_msg: 'Card message', b_msgph: 'Write something lovely…',
       b_surprise: 'Surprise me', b_clear: 'Start over', b_add: 'Add to cart', b_hint: 'Final price confirmed over WhatsApp based on the day’s availability.',
-      b_empty: 'Add at least one stem to see your bouquet.', b_ref: 'Reference photo', b_sketch: 'Sketch of your mix', b_drag: 'Drag to rotate', b_perstem: 'per stem', b_base: 'Hand-tying and paper', b_tone: 'Tone',
+      b_empty: 'Add at least one stem to see your bouquet.', b_ref: 'Reference bouquet', b_yours: 'What your bouquet includes', b_perstem: 'per stem', b_base: 'Hand-tying and paper', b_tone: 'Tone',
       size_peq: 'Small bouquet', size_med: 'Medium bouquet', size_gra: 'Large bouquet', size_del: 'Deluxe bouquet', custom_name: 'Custom bouquet',
       included: 'Included', paper: 'paper', ribbon: 'ribbon', extras: 'extras', card: 'card',
       pf_eyebrow: 'Portfolio', pf_title: 'Some of our work', pf_note: 'Sample photographs illustrating each type of project. They are replaced with the real portfolio at launch.',
@@ -272,17 +272,45 @@ window.EYD = (function () {
     { q: { es: '¿Cómo pago?', en: 'How do I pay?' }, a: { es: 'Transferencia, tarjeta mediante enlace de pago o efectivo al recoger. En esta página no se cobra nada: confirmamos todo por WhatsApp.', en: 'Bank transfer, card via payment link or cash on pickup. Nothing is charged on this page: we confirm everything over WhatsApp.' } },
   ];
 
-  // Foto de referencia del taller según la flor dominante y su tono (clave: tipo/tono).
-  const PREVIEW_PHOTOS = {
-    'peonia/rosa': 'assets/img/p-amanecer.jpg', 'peonia/blush': 'assets/img/p-novia.jpg', 'peonia/vino': 'assets/img/p-peoniareal.jpg',
-    'rosa/vino': 'assets/img/p-vinooro.jpg', 'rosa/rosa': 'assets/img/b-rosa-rosa.jpg', 'rosa/blanco': 'assets/img/p-corporativo.jpg', 'rosa/durazno': 'assets/img/p-durazno.jpg',
-    'tulipan/rosa': 'assets/img/p-tulipanes.jpg', 'tulipan/blanco': 'assets/img/p-silvestre.jpg', 'tulipan/vino': 'assets/img/b-tulipan-vino.jpg', 'tulipan/amarillo': 'assets/img/b-tulipan-amarillo.jpg',
-    'lirio/crema': 'assets/img/p-lirio.jpg', 'lirio/rosa': 'assets/img/p-condolencia.jpg',
-    'hortensia/rosa': 'assets/img/p-hortensia.jpg', 'hortensia/azul': 'assets/img/p-azul.jpg', 'hortensia/blanco': 'assets/img/b-hortensia-blanco.jpg',
-    'eucalipto/verde': 'assets/img/b-filler.jpg', 'gypsophila/blanco': 'assets/img/b-filler.jpg',
-  };
+  // Fotografías reales de ramos para la vista previa del taller. Se muestra la que mejor coincide con la flor
+  // dominante, su tono y el papel elegido (wrap: null = sirve para cualquier papel).
+  const BOUQUET_PHOTOS = [
+    { type: 'peonia', variant: 'rosa', wrap: 'blanco', img: 'assets/img/p-amanecer.jpg', cap: { es: 'Peonías rosa en papel blanco', en: 'Pink peonies in white paper' } },
+    { type: 'peonia', variant: 'rosa', wrap: 'kraft', img: 'assets/img/r-peonia-rosa-kraft.jpg', cap: { es: 'Peonías rosa en kraft', en: 'Pink peonies in kraft' } },
+    { type: 'peonia', variant: 'rosa', wrap: 'negro', img: 'assets/img/r-peonia-rosa-negro.jpg', cap: { es: 'Peonías rosa en papel negro', en: 'Pink peonies in black paper' } },
+    { type: 'peonia', variant: 'blush', wrap: null, img: 'assets/img/p-novia.jpg', cap: { es: 'Peonías rosa pálido con listón de seda', en: 'Blush peonies with silk ribbon' } },
+    { type: 'peonia', variant: 'vino', wrap: null, img: 'assets/img/p-peoniareal.jpg', cap: { es: 'Peonías coral en papel negro', en: 'Coral peonies in black paper' } },
+    { type: 'rosa', variant: 'vino', wrap: 'kraft', img: 'assets/img/r-rosa-vino-kraft.jpg', cap: { es: 'Rosas vino con gypsophila en kraft', en: 'Wine roses with baby’s breath in kraft' } },
+    { type: 'rosa', variant: 'vino', wrap: null, img: 'assets/img/p-vinooro.jpg', cap: { es: 'Rosas vino con eucalipto', en: 'Wine roses with eucalyptus' } },
+    { type: 'rosa', variant: 'vino', wrap: 'blanco', img: 'assets/img/r-rosa-vino-liston.jpg', cap: { es: 'Rosas vino con eucalipto y listón', en: 'Wine roses with eucalyptus and ribbon' } },
+    { type: 'rosa', variant: 'rosa', wrap: 'blanco', img: 'assets/img/b-rosa-rosa.jpg', cap: { es: 'Rosas rosa con gypsophila en papel blanco', en: 'Pink roses with baby’s breath in white paper' } },
+    { type: 'rosa', variant: 'rosa', wrap: 'blush', img: 'assets/img/r-rosa-rosa-lila.png', cap: { es: 'Rosas rosa en papel de color', en: 'Pink roses in coloured paper' } },
+    { type: 'rosa', variant: 'blanco', wrap: 'negro', img: 'assets/img/p-corporativo.jpg', cap: { es: 'Rosas blancas en papel negro', en: 'White roses in black paper' } },
+    { type: 'rosa', variant: 'blanco', wrap: 'blanco', img: 'assets/img/r-rosa-blanco-papel.jpg', cap: { es: 'Rosas blancas en papel decorado', en: 'White roses in decorative paper' } },
+    { type: 'rosa', variant: 'blanco', wrap: null, img: 'assets/img/r-rosa-blanco.jpg', cap: { es: 'Rosas blancas', en: 'White roses' } },
+    { type: 'rosa', variant: 'durazno', wrap: null, img: 'assets/img/p-durazno.jpg', cap: { es: 'Rosas durazno', en: 'Peach roses' } },
+    { type: 'rosa', variant: 'durazno', wrap: 'blush', img: 'assets/img/r-rosa-durazno-2.jpg', cap: { es: 'Rosas durazno con luz suave', en: 'Peach roses in soft light' } },
+    { type: 'tulipan', variant: 'rosa', wrap: 'blanco', img: 'assets/img/p-tulipanes.jpg', cap: { es: 'Tulipanes rosa en papel blanco', en: 'Pink tulips in white paper' } },
+    { type: 'tulipan', variant: 'rosa', wrap: 'kraft', img: 'assets/img/r-tulipan-rosa-kraft.jpg', cap: { es: 'Tulipanes rosa en kraft', en: 'Pink tulips in kraft' } },
+    { type: 'tulipan', variant: 'rosa', wrap: 'blush', img: 'assets/img/r-tulipan-rosa-papel.jpg', cap: { es: 'Tulipanes rosa en papel estampado', en: 'Pink tulips in patterned paper' } },
+    { type: 'tulipan', variant: 'blanco', wrap: 'kraft', img: 'assets/img/p-silvestre.jpg', cap: { es: 'Tulipanes blancos en kraft', en: 'White tulips in kraft' } },
+    { type: 'tulipan', variant: 'blanco', wrap: null, img: 'assets/img/r-tulipan-blanco.jpg', cap: { es: 'Tulipanes blancos', en: 'White tulips' } },
+    { type: 'tulipan', variant: 'vino', wrap: null, img: 'assets/img/b-tulipan-vino.jpg', cap: { es: 'Tulipanes rojos', en: 'Red tulips' } },
+    { type: 'tulipan', variant: 'amarillo', wrap: null, img: 'assets/img/b-tulipan-amarillo.jpg', cap: { es: 'Tulipanes amarillos', en: 'Yellow tulips' } },
+    { type: 'lirio', variant: 'crema', wrap: 'blanco', img: 'assets/img/p-lirio.jpg', cap: { es: 'Lirios blancos con rosas', en: 'White lilies with roses' } },
+    { type: 'lirio', variant: 'crema', wrap: null, img: 'assets/img/r-lirio-crema.jpg', cap: { es: 'Lirios blancos', en: 'White lilies' } },
+    { type: 'lirio', variant: 'rosa', wrap: null, img: 'assets/img/r-lirio-rosa.jpg', cap: { es: 'Lirios rosa', en: 'Pink lilies' } },
+    { type: 'hortensia', variant: 'rosa', wrap: 'blanco', img: 'assets/img/p-hortensia.jpg', cap: { es: 'Hortensias rosa y blancas en papel de seda', en: 'Pink and white hydrangeas in tissue paper' } },
+    { type: 'hortensia', variant: 'rosa', wrap: null, img: 'assets/img/r-hortensia-rosa-2.jpg', cap: { es: 'Hortensias con rosas', en: 'Hydrangeas with roses' } },
+    { type: 'hortensia', variant: 'azul', wrap: null, img: 'assets/img/p-azul.jpg', cap: { es: 'Hortensias azules y blancas', en: 'Blue and white hydrangeas' } },
+    { type: 'hortensia', variant: 'azul', wrap: 'blanco', img: 'assets/img/r-hortensia-azul-2.jpg', cap: { es: 'Hortensias azules con listones', en: 'Blue hydrangeas with ribbons' } },
+    { type: 'hortensia', variant: 'blanco', wrap: null, img: 'assets/img/b-hortensia-blanco.jpg', cap: { es: 'Hortensias blancas', en: 'White hydrangeas' } },
+    { type: 'eucalipto', variant: 'verde', wrap: null, img: 'assets/img/r-eucalipto.jpg', cap: { es: 'Ramas de eucalipto', en: 'Eucalyptus stems' } },
+    { type: 'gypsophila', variant: 'blanco', wrap: 'negro', img: 'assets/img/b-filler.jpg', cap: { es: 'Gypsophila en papel negro', en: 'Baby’s breath in black paper' } },
+    { type: 'gypsophila', variant: 'blanco', wrap: 'kraft', img: 'assets/img/r-gypsophila-kraft.jpg', cap: { es: 'Gypsophila en kraft', en: 'Baby’s breath in kraft' } },
+  ];
 
   const MARQUEE = { es: ['Bodas', 'Galas', 'Lanzamientos', 'Cumpleaños', 'Aniversarios', 'Nacimientos', 'Condolencias', 'Oficinas', 'Cenas privadas', 'Bautizos'], en: ['Weddings', 'Galas', 'Launches', 'Birthdays', 'Anniversaries', 'New babies', 'Sympathy', 'Offices', 'Private dinners', 'Christenings'] };
 
-  return { CONFIG, T, FLOWERS, PALETTES, VARIANT_NAMES, WRAPS, RIBBONS, EXTRAS, ZONES, SLOTS, OCC, SIZES, PRODUCTS, PORTFOLIO, PROCESS, SERVICES, TESTIMONIALS, FAQS, MARQUEE, PREVIEW_PHOTOS };
+  return { CONFIG, T, FLOWERS, PALETTES, VARIANT_NAMES, WRAPS, RIBBONS, EXTRAS, ZONES, SLOTS, OCC, SIZES, PRODUCTS, PORTFOLIO, PROCESS, SERVICES, TESTIMONIALS, FAQS, MARQUEE, BOUQUET_PHOTOS };
 })();

@@ -157,8 +157,17 @@ window.App = (function () {
   const sizeKey = (n) => n <= 8 ? 'peq' : n <= 14 ? 'med' : n <= 22 ? 'gra' : 'del';
   const FOCAL = { peonia: 0, hortensia: 1, lirio: 2, rosa: 3, tulipan: 4, gypsophila: 5, eucalipto: 6 };
   function dominantType() { const c = b().counts; return Object.keys(D.FLOWERS).filter((k) => c[k] > 0).sort((x, y) => (c[y] - c[x]) || (FOCAL[x] - FOCAL[y]))[0] || null; }
-  function previewPhoto() { const k = dominantType(); if (!k) return null; return D.PREVIEW_PHOTOS[k + '/' + b().variants[k]] || D.PREVIEW_PHOTOS[k + '/' + D.FLOWERS[k].variants[0]] || null; }
-  function dominantLabel() { const k = dominantType(); if (!k) return ''; const f = D.FLOWERS[k]; return L(f.name) + (f.variants.length > 1 ? ' ' + L(D.VARIANT_NAMES[b().variants[k]]) : ''); }
+  // Foto real que mejor coincide con tipo, tono y papel.
+  function photoEntry(type, variant, wrap) {
+    let list = D.BOUQUET_PHOTOS.filter((e) => e.type === type && e.variant === variant);
+    if (!list.length) list = D.BOUQUET_PHOTOS.filter((e) => e.type === type);
+    if (!list.length) return null;
+    const score = (e) => e.wrap === wrap ? 2 : e.wrap == null ? 1 : 0;
+    return list.slice().sort((x, y) => score(y) - score(x))[0];
+  }
+  function previewEntry() { const k = dominantType(); return k ? photoEntry(k, b().variants[k], b().wrap) : null; }
+  function photoFor(type, variant) { const e = photoEntry(type, variant, b().wrap); return e ? e.img : ''; }
+  function previewPhoto() { const e = previewEntry(); return e ? e.img : null; }
   function saveBuilder() { store.set('eyd.builder', b()); }
 
   function renderBuilder() {
@@ -166,7 +175,7 @@ window.App = (function () {
       const f = D.FLOWERS[k];
       const tones = f.variants.length > 1 ? `<div class="tones" role="group" aria-label="${esc(t('b_tone'))}">${f.variants.map((v) => `<button type="button" class="tone" data-v="${v}" style="--c:${D.PALETTES[k][v][0]};--c2:${D.PALETTES[k][v][1]}" aria-pressed="${b().variants[k] === v}" aria-label="${esc(L(D.VARIANT_NAMES[v]))}" title="${esc(L(D.VARIANT_NAMES[v]))}"></button>`).join('')}</div>` : '';
       return `<div class="frow" data-type="${k}">
-        <div class="sw">${B.flowerSVG(k, b().variants[k])}</div>
+        <div class="sw"><img src="${photoFor(k, b().variants[k])}" alt="" loading="lazy"></div>
         <div class="fi"><div class="nm">${esc(L(f.name))}</div><div class="pp">${money(f.price)} ${esc(t('b_perstem'))}</div>${tones}</div>
         <div class="stepper"><button type="button" data-d="-1" aria-label="${esc(t('less'))}">−</button><output>${b().counts[k]}</output><button type="button" data-d="1" aria-label="${esc(t('more'))}">+</button></div>
       </div>`;
@@ -187,39 +196,41 @@ window.App = (function () {
     });
     renderStage(tot);
     $('#pvSize').textContent = tot.stems ? t('size_' + sizeKey(tot.stems)) + ' · ' + tot.stems + ' ' + t(tot.stems === 1 ? 'stem' : 'stems') : t('custom_name');
-    $('#pvDetail').textContent = tot.stems ? specSummary(builderSpec()) + ' · ' + t('b_base') + ' ' + money(D.CONFIG.baseFee) : '';
+    $('#pvDetail').textContent = tot.stems ? specSummary(builderSpec()) + ' · ' + L(D.WRAPS[b().wrap].name).toLowerCase() + ' · ' + t('b_base') + ' ' + money(D.CONFIG.baseFee) : '';
     $('#pvPrice').textContent = money(tot.total);
     $('#addCustomPrice').textContent = money(tot.total);
     $('#addCustomBtn').disabled = !tot.stems;
     $('#msgCount').textContent = (b().msg || '').length;
     saveBuilder();
   }
-  let stageMode = null; // '3d' cuando hay WebGL, 'photo' como respaldo
+  let stageReady = false, stageActive = 0;
   function ensureStage() {
     const stage = $('#stage');
-    if (stageMode) return stage;
-    stageMode = (window.Bouquet3D && window.Bouquet3D.ok()) ? '3d' : 'photo';
-    stage.innerHTML = (stageMode === '3d' ? '<div class="stage-3d" id="stage3d"></div>' : '<img class="stage-photo" id="stagePhoto" alt="">')
-      + '<div class="stage-inset" id="stageInset"></div><span class="stage-tag" id="stageTag"></span>'
-      + (stageMode === '3d' ? '<span class="stage-hint" id="stageHint"></span>' : '')
-      + '<p class="stage-empty" id="stageEmpty" hidden></p>';
-    if (stageMode === '3d') window.Bouquet3D.mount($('#stage3d'));
+    if (stageReady) return stage;
+    stageReady = true;
+    stage.innerHTML = '<img class="stage-photo" id="stagePhoto0" alt=""><img class="stage-photo" id="stagePhoto1" alt=""><span class="stage-tag" id="stageTag"></span><p class="stage-empty" id="stageEmpty" hidden></p>';
     return stage;
   }
   function renderStage(tot) {
-    const stage = ensureStage(), empty = $('#stageEmpty');
-    if (!tot.stems) { stage.classList.add('is-empty'); empty.hidden = false; empty.textContent = t('b_empty'); if (stageMode === '3d') window.Bouquet3D.update({ items: [] }); return; }
+    const stage = ensureStage(), empty = $('#stageEmpty'), strip = $('#stageStrip');
+    if (!tot.stems) { stage.classList.add('is-empty'); empty.hidden = false; empty.textContent = t('b_empty'); strip.innerHTML = ''; return; }
     stage.classList.remove('is-empty'); empty.hidden = true;
-    const photo = previewPhoto(), label = dominantLabel(), inset = $('#stageInset');
-    if (stageMode === '3d') {
-      window.Bouquet3D.update(builderSpec());
-      if (inset.dataset.src !== (photo || '')) { inset.innerHTML = photo ? `<img src="${photo}" alt="">` : ''; inset.dataset.src = photo || ''; }
-      $('#stageHint').textContent = t('b_drag');
-    } else {
-      const img = $('#stagePhoto'); if (img.getAttribute('src') !== photo) img.src = photo; img.alt = t('b_ref') + ': ' + label;
-      inset.innerHTML = B.svg(builderSpec(), t('b_sketch'));
+    const e = previewEntry();
+    if (e) {
+      const cur = $('#stagePhoto' + stageActive);
+      if (cur.getAttribute('src') !== e.img) {
+        const next = $('#stagePhoto' + (1 - stageActive));
+        next.alt = t('b_ref') + ': ' + L(e.cap);
+        next.onload = () => { next.classList.add('on'); cur.classList.remove('on'); };
+        next.src = e.img;
+        if (next.complete && next.naturalWidth) next.onload();
+        stageActive = 1 - stageActive;
+      } else { cur.alt = t('b_ref') + ': ' + L(e.cap); }
+      $('#stageTag').textContent = t('b_ref') + ' · ' + L(e.cap);
     }
-    $('#stageTag').textContent = t('b_ref') + ' · ' + label;
+    const c = b().counts;
+    const types = Object.keys(D.FLOWERS).filter((k) => c[k] > 0).sort((x, y) => (c[y] - c[x]) || (FOCAL[x] - FOCAL[y]));
+    strip.innerHTML = `<span class="strip-lbl">${esc(t('b_yours'))}</span>` + types.map((k) => `<figure class="chip-f"><img src="${photoFor(k, b().variants[k])}" alt=""><figcaption>×${c[k]} ${esc(L(D.FLOWERS[k].name))}</figcaption></figure>`).join('');
   }
   function setCount(k, n) { b().counts[k] = Math.max(0, Math.min(12, n)); const total = Object.values(b().counts).reduce((a, v) => a + v, 0); if (total > 40) b().counts[k] -= total - 40; updateBuilder(); }
   function loadSpec(spec) {
@@ -295,9 +306,9 @@ window.App = (function () {
       const row = e.target.closest('.frow'); if (!row) return;
       const k = row.dataset.type;
       const step = e.target.closest('[data-d]'); if (step) { setCount(k, (b().counts[k] || 0) + Number(step.dataset.d)); return; }
-      const tone = e.target.closest('[data-v]'); if (tone) { b().variants[k] = tone.dataset.v; $('.sw', row).innerHTML = B.flowerSVG(k, tone.dataset.v); updateBuilder(); }
+      const tone = e.target.closest('[data-v]'); if (tone) { b().variants[k] = tone.dataset.v; $('.sw img', row).src = photoFor(k, tone.dataset.v); updateBuilder(); }
     });
-    $('#wrapList').addEventListener('click', (e) => { const s = e.target.closest('[data-wrap]'); if (!s) return; b().wrap = s.dataset.wrap; $$('#wrapList .swatch').forEach((x) => x.setAttribute('aria-pressed', String(x === s))); updateBuilder(); });
+    $('#wrapList').addEventListener('click', (e) => { const s = e.target.closest('[data-wrap]'); if (!s) return; b().wrap = s.dataset.wrap; $$('#wrapList .swatch').forEach((x) => x.setAttribute('aria-pressed', String(x === s))); $$('.frow').forEach((row) => { const im = $('.sw img', row); if (im) im.src = photoFor(row.dataset.type, b().variants[row.dataset.type]); }); updateBuilder(); });
     $('#ribbonList').addEventListener('click', (e) => { const s = e.target.closest('[data-ribbon]'); if (!s) return; b().ribbon = s.dataset.ribbon; $$('#ribbonList .swatch').forEach((x) => x.setAttribute('aria-pressed', String(x === s))); updateBuilder(); });
     $('#extraList').addEventListener('change', (e) => { const id = e.target.dataset.extra; if (!id) return; b().extras = e.target.checked ? b().extras.concat(id) : b().extras.filter((x) => x !== id); updateBuilder(); });
     $('#cardMsg').addEventListener('input', (e) => { b().msg = e.target.value; $('#msgCount').textContent = e.target.value.length; saveBuilder(); });

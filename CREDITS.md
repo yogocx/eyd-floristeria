@@ -31,17 +31,20 @@ Fotografías de muestra tomadas de [Pexels](https://www.pexels.com) bajo la [lic
 | assets/img/b-tulipan-amarillo.jpg | https://www.pexels.com/photo/33340747/ |
 | assets/img/b-hortensia-blanco.jpg | https://www.pexels.com/photo/18703645/ |
 | assets/img/b-filler.jpg | https://www.pexels.com/photo/19843318/ |
-
-## Recortes de flores para la vista 3D del taller (`assets/flowers/`)
-
-Fotos de Pexels con el fondo eliminado. Las flores blancas se tiñen en pantalla según el tono elegido.
-
-| Archivo | Fuente |
-| --- | --- |
-| peonia.png | https://www.pexels.com/photo/17568255/ |
-| rosa.png | https://www.pexels.com/photo/9080009/ |
-| tulipan.png | https://www.pexels.com/photo/16705603/ |
-| lirio.png | https://www.pexels.com/photo/36519815/ |
-| hortensia.png | https://www.pexels.com/photo/8126795/ |
-| eucalipto.png | https://www.pexels.com/photo/4135633/ |
-| gypsophila.png | https://www.pexels.com/photo/20304134/ |
+| assets/img/r-peonia-rosa-kraft.jpg | https://www.pexels.com/photo/11808193/ |
+| assets/img/r-peonia-rosa-negro.jpg | https://www.pexels.com/photo/36399727/ |
+| assets/img/r-rosa-vino-kraft.jpg | https://www.pexels.com/photo/30190440/ |
+| assets/img/r-rosa-vino-liston.jpg | https://www.pexels.com/photo/34730769/ |
+| assets/img/r-rosa-rosa-lila.png | https://www.pexels.com/photo/33886749/ |
+| assets/img/r-rosa-blanco-papel.jpg | https://www.pexels.com/photo/34067792/ |
+| assets/img/r-rosa-blanco.jpg | https://www.pexels.com/photo/35985240/ |
+| assets/img/r-rosa-durazno-2.jpg | https://www.pexels.com/photo/32239878/ |
+| assets/img/r-tulipan-rosa-kraft.jpg | https://www.pexels.com/photo/20791958/ |
+| assets/img/r-tulipan-rosa-papel.jpg | https://www.pexels.com/photo/11554899/ |
+| assets/img/r-tulipan-blanco.jpg | https://www.pexels.com/photo/31074939/ |
+| assets/img/r-lirio-crema.jpg | https://www.pexels.com/photo/38909719/ |
+| assets/img/r-lirio-rosa.jpg | https://www.pexels.com/photo/13008754/ |
+| assets/img/r-hortensia-rosa-2.jpg | https://www.pexels.com/photo/34789794/ |
+| assets/img/r-hortensia-azul-2.jpg | https://www.pexels.com/photo/8723269/ |
+| assets/img/r-eucalipto.jpg | https://www.pexels.com/photo/4135633/ |
+| assets/img/r-gypsophila-kraft.jpg | https://www.pexels.com/photo/19928261/ |
