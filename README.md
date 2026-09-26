@@ -27,7 +27,7 @@ Edita el bloque `CONFIG` al inicio de `data.js`:
 
 - `whatsapp` (número con código de país, sin `+`), `phoneDisplay`, `email`, `address`, `mapsUrl`
 - `instagram` / `instagramUrl` (ya apunta a @edfloristeriaa)
-- `currency` y `locale` (por defecto MXN / es-MX)
+- `currency` y `locale` (por defecto USD / es-US; cambia a MXN, EUR, etc. y ajusta los precios)
 - `baseFee`, `freeDeliveryFrom`, `cutoffHour`, `closedDays`, `hours`, `stats`
 - Zonas y tarifas de entrega en `ZONES`; precios por tallo en `FLOWERS`; catálogo en `PRODUCTS`
 

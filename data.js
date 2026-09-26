@@ -14,10 +14,10 @@ window.EYD = (function () {
     mapsUrl: 'https://maps.google.com/?q=Av.+de+las+Flores+123',
     instagram: 'edfloristeriaa',
     instagramUrl: 'https://www.instagram.com/edfloristeriaa',
-    locale: 'es-MX',
-    currency: 'MXN',
-    baseFee: 120,            // armado y papel de un ramo personalizado
-    freeDeliveryFrom: 1200,  // envío gratis a partir de este subtotal
+    locale: 'es-US',         // formato de números; el idioma de la página se controla aparte
+    currency: 'USD',         // moneda de todos los precios (USD, MXN, EUR…)
+    baseFee: 12,             // armado y papel de un ramo personalizado
+    freeDeliveryFrom: 100,   // envío gratis a partir de este subtotal
     cutoffHour: 13,          // hora límite para entrega el mismo día
     closedDays: [0],         // 0 = domingo
     hours: [
@@ -132,13 +132,13 @@ window.EYD = (function () {
 
   // Flores disponibles en el taller. price = precio por tallo. r = radio visual para el acomodo.
   const FLOWERS = {
-    peonia:     { name: { es: 'Peonía', en: 'Peony' },          plural: { es: 'peonías', en: 'peonies' },          price: 95,  r: 22, variants: ['rosa', 'blush', 'vino'] },
-    rosa:       { name: { es: 'Rosa', en: 'Rose' },             plural: { es: 'rosas', en: 'roses' },              price: 55,  r: 16, variants: ['vino', 'rosa', 'blanco', 'durazno'] },
-    tulipan:    { name: { es: 'Tulipán', en: 'Tulip' },         plural: { es: 'tulipanes', en: 'tulips' },         price: 45,  r: 14, variants: ['rosa', 'blanco', 'vino', 'amarillo'] },
-    lirio:      { name: { es: 'Lirio', en: 'Lily' },            plural: { es: 'lirios', en: 'lilies' },            price: 70,  r: 20, variants: ['crema', 'rosa'] },
-    hortensia:  { name: { es: 'Hortensia', en: 'Hydrangea' },   plural: { es: 'hortensias', en: 'hydrangeas' },    price: 120, r: 20, variants: ['rosa', 'azul', 'blanco'] },
-    eucalipto:  { name: { es: 'Eucalipto', en: 'Eucalyptus' },  plural: { es: 'eucalipto', en: 'eucalyptus' },     price: 25,  r: 14, variants: ['verde'] },
-    gypsophila: { name: { es: 'Gypsophila', en: 'Baby’s breath' }, plural: { es: 'gypsophila', en: 'baby’s breath' }, price: 30, r: 13, variants: ['blanco'] },
+    peonia:     { name: { es: 'Peonía', en: 'Peony' },          plural: { es: 'peonías', en: 'peonies' },          price: 9,  r: 22, variants: ['rosa', 'blush', 'vino'] },
+    rosa:       { name: { es: 'Rosa', en: 'Rose' },             plural: { es: 'rosas', en: 'roses' },              price: 4,  r: 16, variants: ['vino', 'rosa', 'blanco', 'durazno'] },
+    tulipan:    { name: { es: 'Tulipán', en: 'Tulip' },         plural: { es: 'tulipanes', en: 'tulips' },         price: 3,  r: 14, variants: ['rosa', 'blanco', 'vino', 'amarillo'] },
+    lirio:      { name: { es: 'Lirio', en: 'Lily' },            plural: { es: 'lirios', en: 'lilies' },            price: 6,  r: 20, variants: ['crema', 'rosa'] },
+    hortensia:  { name: { es: 'Hortensia', en: 'Hydrangea' },   plural: { es: 'hortensias', en: 'hydrangeas' },    price: 9, r: 20, variants: ['rosa', 'azul', 'blanco'] },
+    eucalipto:  { name: { es: 'Eucalipto', en: 'Eucalyptus' },  plural: { es: 'eucalipto', en: 'eucalyptus' },     price: 2,  r: 14, variants: ['verde'] },
+    gypsophila: { name: { es: 'Gypsophila', en: 'Baby’s breath' }, plural: { es: 'gypsophila', en: 'baby’s breath' }, price: 3, r: 13, variants: ['blanco'] },
   };
 
   const PALETTES = {
@@ -173,18 +173,18 @@ window.EYD = (function () {
 
   const EXTRAS = [
     { id: 'tarjeta', name: { es: 'Tarjeta escrita a mano', en: 'Handwritten card' }, price: 0 },
-    { id: 'choc',    name: { es: 'Chocolates artesanales', en: 'Artisan chocolates' }, price: 180 },
-    { id: 'vela',    name: { es: 'Vela aromática', en: 'Scented candle' }, price: 150 },
-    { id: 'jarron',  name: { es: 'Jarrón de vidrio', en: 'Glass vase' }, price: 250 },
-    { id: 'globo',   name: { es: 'Globo', en: 'Balloon' }, price: 90 },
+    { id: 'choc',    name: { es: 'Chocolates artesanales', en: 'Artisan chocolates' }, price: 15 },
+    { id: 'vela',    name: { es: 'Vela aromática', en: 'Scented candle' }, price: 18 },
+    { id: 'jarron',  name: { es: 'Jarrón de vidrio', en: 'Glass vase' }, price: 20 },
+    { id: 'globo',   name: { es: 'Globo', en: 'Balloon' }, price: 6 },
   ];
 
   const ZONES = [
     { id: 'centro',   name: { es: 'Centro', en: 'Downtown' },  fee: 0 },
-    { id: 'norte',    name: { es: 'Norte', en: 'North' },      fee: 60 },
-    { id: 'sur',      name: { es: 'Sur', en: 'South' },        fee: 60 },
-    { id: 'oriente',  name: { es: 'Oriente', en: 'East' },     fee: 80 },
-    { id: 'poniente', name: { es: 'Poniente', en: 'West' },    fee: 80 },
+    { id: 'norte',    name: { es: 'Norte', en: 'North' },      fee: 8 },
+    { id: 'sur',      name: { es: 'Sur', en: 'South' },        fee: 8 },
+    { id: 'oriente',  name: { es: 'Oriente', en: 'East' },     fee: 12 },
+    { id: 'poniente', name: { es: 'Poniente', en: 'West' },    fee: 12 },
   ];
 
   const SLOTS = ['m', 't', 'n'];
@@ -192,40 +192,40 @@ window.EYD = (function () {
   const SIZES = { std: 1, grande: 1.35, deluxe: 1.7 };
 
   const PRODUCTS = [
-    { id: 'amanecer', img: 'assets/img/p-amanecer.jpg', name: { es: 'Amanecer Rosa', en: 'Rose Dawn' }, price: 890, occ: ['amor', 'cumple'],
+    { id: 'amanecer', img: 'assets/img/p-amanecer.jpg', name: { es: 'Amanecer Rosa', en: 'Rose Dawn' }, price: 85, occ: ['amor', 'cumple'],
       desc: { es: 'Peonías rosa en papel blanco con listón dorado. Nuestro ramo más pedido.', en: 'Pink peonies in white paper with a gold ribbon. Our most requested bouquet.' },
       spec: { items: [{ type: 'peonia', n: 9, variant: 'rosa' }, { type: 'eucalipto', n: 2 }], wrap: 'blanco', ribbon: 'oro' } },
-    { id: 'vinooro', img: 'assets/img/p-vinooro.jpg', name: { es: 'Vino y Oro', en: 'Wine & Gold' }, price: 760, occ: ['amor', 'aniv'],
+    { id: 'vinooro', img: 'assets/img/p-vinooro.jpg', name: { es: 'Vino y Oro', en: 'Wine & Gold' }, price: 65, occ: ['amor', 'aniv'],
       desc: { es: 'Rosas color vino con eucalipto fresco, envueltas en kraft con listón dorado.', en: 'Wine-red roses with fresh eucalyptus, wrapped in kraft with a gold ribbon.' },
       spec: { items: [{ type: 'rosa', n: 9, variant: 'vino' }, { type: 'eucalipto', n: 5 }], wrap: 'kraft', ribbon: 'oro' } },
-    { id: 'tulipanes', img: 'assets/img/p-tulipanes.jpg', name: { es: 'Jardín de Tulipanes', en: 'Tulip Garden' }, price: 650, occ: ['cumple', 'porque'],
+    { id: 'tulipanes', img: 'assets/img/p-tulipanes.jpg', name: { es: 'Jardín de Tulipanes', en: 'Tulip Garden' }, price: 48, occ: ['cumple', 'porque'],
       desc: { es: 'Quince tulipanes rosa en papel blanco. Sencillo, fresco y alegre.', en: 'Fifteen pink tulips in white paper. Simple, fresh and cheerful.' },
       spec: { items: [{ type: 'tulipan', n: 15, variant: 'rosa' }], wrap: 'blanco', ribbon: 'rosa' } },
-    { id: 'lirio', img: 'assets/img/p-lirio.jpg', name: { es: 'Lirio Sereno', en: 'Quiet Lily' }, price: 820, occ: ['cond', 'porque'],
+    { id: 'lirio', img: 'assets/img/p-lirio.jpg', name: { es: 'Lirio Sereno', en: 'Quiet Lily' }, price: 70, occ: ['cond', 'porque'],
       desc: { es: 'Lirios crema con eucalipto y gypsophila. Un arreglo sobrio para acompañar.', en: 'Cream lilies with eucalyptus and baby’s breath. A gentle arrangement to accompany.' },
       spec: { items: [{ type: 'lirio', n: 5, variant: 'crema' }, { type: 'eucalipto', n: 4 }, { type: 'gypsophila', n: 4 }], wrap: 'blanco', ribbon: 'oliva' } },
-    { id: 'hortensia', img: 'assets/img/p-hortensia.jpg', name: { es: 'Nube de Hortensia', en: 'Hydrangea Cloud' }, price: 980, occ: ['nac', 'aniv'],
+    { id: 'hortensia', img: 'assets/img/p-hortensia.jpg', name: { es: 'Nube de Hortensia', en: 'Hydrangea Cloud' }, price: 78, occ: ['nac', 'aniv'],
       desc: { es: 'Hortensias rosa y blancas en papel de seda. Suave y voluminoso, ideal para recibir a alguien nuevo.', en: 'Pink and white hydrangeas in tissue paper. Soft and generous, perfect for welcoming someone new.' },
       spec: { items: [{ type: 'hortensia', n: 3, variant: 'rosa' }, { type: 'hortensia', n: 2, variant: 'blanco' }, { type: 'eucalipto', n: 3 }], wrap: 'blanco', ribbon: 'rosa' } },
-    { id: 'silvestre', img: 'assets/img/p-silvestre.jpg', name: { es: 'Campo Silvestre', en: 'Wildflower Field' }, price: 540, occ: ['porque', 'cumple'],
+    { id: 'silvestre', img: 'assets/img/p-silvestre.jpg', name: { es: 'Campo Silvestre', en: 'Wildflower Field' }, price: 42, occ: ['porque', 'cumple'],
       desc: { es: 'Tulipanes blancos envueltos en kraft. Sencillo, ligero y de campo.', en: 'White tulips wrapped in kraft. Simple, light and country-fresh.' },
       spec: { items: [{ type: 'tulipan', n: 12, variant: 'blanco' }, { type: 'eucalipto', n: 3 }], wrap: 'kraft', ribbon: 'oliva' } },
-    { id: 'peoniareal', img: 'assets/img/p-peoniareal.jpg', name: { es: 'Peonía Real', en: 'Royal Peony' }, price: 1450, occ: ['boda', 'aniv', 'amor'],
+    { id: 'peoniareal', img: 'assets/img/p-peoniareal.jpg', name: { es: 'Peonía Real', en: 'Royal Peony' }, price: 120, occ: ['boda', 'aniv', 'amor'],
       desc: { es: 'Doce peonías coral en papel negro con listón dorado. Un ramo de celebración.', en: 'Twelve coral peonies in black paper with a gold ribbon. A celebration bouquet.' },
       spec: { items: [{ type: 'peonia', n: 12, variant: 'vino' }], wrap: 'negro', ribbon: 'oro' } },
-    { id: 'corporativo', img: 'assets/img/p-corporativo.jpg', name: { es: 'Clásico Corporativo', en: 'Corporate Classic' }, price: 1100, occ: ['corp'],
+    { id: 'corporativo', img: 'assets/img/p-corporativo.jpg', name: { es: 'Clásico Corporativo', en: 'Corporate Classic' }, price: 85, occ: ['corp'],
       desc: { es: 'Rosas blancas con eucalipto en papel negro. Elegante para recepciones y regalos.', en: 'White roses with eucalyptus in black paper. Elegant for receptions and gifts.' },
       spec: { items: [{ type: 'rosa', n: 12, variant: 'blanco' }, { type: 'eucalipto', n: 4 }], wrap: 'negro', ribbon: 'oro' } },
-    { id: 'durazno', img: 'assets/img/p-durazno.jpg', name: { es: 'Tarde de Durazno', en: 'Peach Afternoon' }, price: 720, occ: ['cumple', 'amor'],
+    { id: 'durazno', img: 'assets/img/p-durazno.jpg', name: { es: 'Tarde de Durazno', en: 'Peach Afternoon' }, price: 68, occ: ['cumple', 'amor'],
       desc: { es: 'Rosas durazno y crema con gypsophila. Cálido y luminoso.', en: 'Peach and cream roses with baby’s breath. Warm and bright.' },
       spec: { items: [{ type: 'rosa', n: 8, variant: 'durazno' }, { type: 'rosa', n: 4, variant: 'blanco' }, { type: 'gypsophila', n: 4 }], wrap: 'blush', ribbon: 'oro' } },
-    { id: 'azul', img: 'assets/img/p-azul.jpg', name: { es: 'Cielo de Hortensia', en: 'Hydrangea Sky' }, price: 940, occ: ['nac', 'porque'],
+    { id: 'azul', img: 'assets/img/p-azul.jpg', name: { es: 'Cielo de Hortensia', en: 'Hydrangea Sky' }, price: 75, occ: ['nac', 'porque'],
       desc: { es: 'Hortensias azules y blancas con eucalipto. Fresco y sereno.', en: 'Blue and white hydrangeas with eucalyptus. Fresh and calm.' },
       spec: { items: [{ type: 'hortensia', n: 3, variant: 'azul' }, { type: 'hortensia', n: 2, variant: 'blanco' }, { type: 'eucalipto', n: 3 }], wrap: 'blanco', ribbon: 'oliva' } },
-    { id: 'novia', img: 'assets/img/p-novia.jpg', name: { es: 'Ramo de Novia Clásico', en: 'Classic Bridal Bouquet' }, price: 1900, occ: ['boda'],
+    { id: 'novia', img: 'assets/img/p-novia.jpg', name: { es: 'Ramo de Novia Clásico', en: 'Classic Bridal Bouquet' }, price: 220, occ: ['boda'],
       desc: { es: 'Peonías blush, rosas blancas y lirios crema, atado con listón de seda. Se diseña junto a la novia.', en: 'Blush peonies, white roses and cream lilies, tied with silk ribbon. Designed together with the bride.' },
       spec: { items: [{ type: 'peonia', n: 5, variant: 'blush' }, { type: 'rosa', n: 6, variant: 'blanco' }, { type: 'lirio', n: 3, variant: 'crema' }, { type: 'eucalipto', n: 3 }], wrap: 'blanco', ribbon: 'rosa' } },
-    { id: 'condolencia', img: 'assets/img/p-condolencia.jpg', name: { es: 'Paz Blanca', en: 'White Peace' }, price: 1250, occ: ['cond'],
+    { id: 'condolencia', img: 'assets/img/p-condolencia.jpg', name: { es: 'Paz Blanca', en: 'White Peace' }, price: 110, occ: ['cond'],
       desc: { es: 'Rosas y lirios blancos con eucalipto. Entrega directa en funerarias y velatorios.', en: 'White roses and lilies with eucalyptus. Direct delivery to funeral homes.' },
       spec: { items: [{ type: 'rosa', n: 8, variant: 'blanco' }, { type: 'lirio', n: 5, variant: 'crema' }, { type: 'eucalipto', n: 5 }], wrap: 'blanco', ribbon: 'oliva' } },
   ];
