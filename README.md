@@ -16,6 +16,7 @@ Sitio interactivo de una página para **E&D Floristería** ("Flores que enamoran
 | `app.js` | Idioma, colección con filtros, vista rápida y taller "Arma tu ramo". |
 | `order.js` | Carrito, pedido por WhatsApp, contacto, portafolio, testimonios, FAQ y pétalos. |
 | `assets/logo.webp` | Logotipo oficial. |
+| `assets/img/` | Fotografías de muestra (ver `CREDITS.md`). Sustituir por fotos propias. |
 | `netlify.toml` | Publica la raíz del repo sin comando de build. |
 
 No hay paso de build: cualquier servidor estático sirve la carpeta tal cual.
@@ -30,7 +31,7 @@ Edita el bloque `CONFIG` al inicio de `data.js`:
 - `baseFee`, `freeDeliveryFrom`, `cutoffHour`, `closedDays`, `hours`, `stats`
 - Zonas y tarifas de entrega en `ZONES`; precios por tallo en `FLOWERS`; catálogo en `PRODUCTS`
 
-Los testimonios, cifras y precios incluidos son ejemplos. Las imágenes de los ramos son ilustraciones generadas; se pueden sustituir por fotografías.
+Los testimonios, cifras y precios incluidos son ejemplos. Las fotografías son de muestra (Pexels, ver `CREDITS.md`); cada ramo del catálogo toma su imagen del campo `img` en `PRODUCTS`, y el portafolio del campo `img` en `PORTFOLIO`. La vista previa del taller "Arma tu ramo" se dibuja en vivo según lo que elige el cliente.
 
 ## Desplegar
 
