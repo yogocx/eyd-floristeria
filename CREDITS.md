@@ -26,3 +26,8 @@ Fotografías de muestra tomadas de [Pexels](https://www.pexels.com) bajo la [lic
 | assets/img/pf-5.jpg | https://www.pexels.com/photo/32476128/ |
 | assets/img/pf-6.jpg | https://www.pexels.com/photo/30828846/ |
 | assets/img/pf-7.jpg | https://www.pexels.com/photo/32799674/ |
+| assets/img/b-rosa-rosa.jpg | https://www.pexels.com/photo/30319522/ |
+| assets/img/b-tulipan-vino.jpg | https://www.pexels.com/photo/30722353/ |
+| assets/img/b-tulipan-amarillo.jpg | https://www.pexels.com/photo/33340747/ |
+| assets/img/b-hortensia-blanco.jpg | https://www.pexels.com/photo/18703645/ |
+| assets/img/b-filler.jpg | https://www.pexels.com/photo/19843318/ |

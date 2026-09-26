@@ -57,7 +57,7 @@ window.EYD = (function () {
       b_eyebrow: 'Arma tu ramo', b_title: 'Tu ramo, tallo por tallo', b_lead: 'Elige flores, papel y listón. La vista previa y el precio cambian al instante.',
       b_step1: 'Elige tus flores', b_step2: 'Papel', b_step3: 'Listón', b_step4: 'Extras', b_msg: 'Mensaje para la tarjeta', b_msgph: 'Escribe algo bonito…',
       b_surprise: 'Sorpréndeme', b_clear: 'Empezar de nuevo', b_add: 'Agregar al carrito', b_hint: 'Precio final confirmado por WhatsApp según disponibilidad del día.',
-      b_empty: 'Agrega al menos un tallo para ver tu ramo.', b_perstem: 'por tallo', b_base: 'Armado y papel', b_tone: 'Tono',
+      b_empty: 'Agrega al menos un tallo para ver tu ramo.', b_ref: 'Foto de referencia', b_sketch: 'Boceto de tu mezcla', b_perstem: 'por tallo', b_base: 'Armado y papel', b_tone: 'Tono',
       size_peq: 'Ramo pequeño', size_med: 'Ramo mediano', size_gra: 'Ramo grande', size_del: 'Ramo deluxe', custom_name: 'Ramo personalizado',
       included: 'Incluida', paper: 'papel', ribbon: 'listón', extras: 'extras', card: 'tarjeta',
       pf_eyebrow: 'Portafolio', pf_title: 'Algunos de nuestros trabajos', pf_note: 'Fotografías de muestra para ilustrar cada tipo de proyecto. Se sustituyen por el portafolio real al publicar.',
@@ -104,7 +104,7 @@ window.EYD = (function () {
       b_eyebrow: 'Build your bouquet', b_title: 'Your bouquet, stem by stem', b_lead: 'Pick flowers, paper and ribbon. Preview and price update as you go.',
       b_step1: 'Choose your flowers', b_step2: 'Wrapping paper', b_step3: 'Ribbon', b_step4: 'Extras', b_msg: 'Card message', b_msgph: 'Write something lovely…',
       b_surprise: 'Surprise me', b_clear: 'Start over', b_add: 'Add to cart', b_hint: 'Final price confirmed over WhatsApp based on the day’s availability.',
-      b_empty: 'Add at least one stem to see your bouquet.', b_perstem: 'per stem', b_base: 'Hand-tying and paper', b_tone: 'Tone',
+      b_empty: 'Add at least one stem to see your bouquet.', b_ref: 'Reference photo', b_sketch: 'Sketch of your mix', b_perstem: 'per stem', b_base: 'Hand-tying and paper', b_tone: 'Tone',
       size_peq: 'Small bouquet', size_med: 'Medium bouquet', size_gra: 'Large bouquet', size_del: 'Deluxe bouquet', custom_name: 'Custom bouquet',
       included: 'Included', paper: 'paper', ribbon: 'ribbon', extras: 'extras', card: 'card',
       pf_eyebrow: 'Portfolio', pf_title: 'Some of our work', pf_note: 'Sample photographs illustrating each type of project. They are replaced with the real portfolio at launch.',
@@ -272,7 +272,17 @@ window.EYD = (function () {
     { q: { es: '¿Cómo pago?', en: 'How do I pay?' }, a: { es: 'Transferencia, tarjeta mediante enlace de pago o efectivo al recoger. En esta página no se cobra nada: confirmamos todo por WhatsApp.', en: 'Bank transfer, card via payment link or cash on pickup. Nothing is charged on this page: we confirm everything over WhatsApp.' } },
   ];
 
+  // Foto de referencia del taller según la flor dominante y su tono (clave: tipo/tono).
+  const PREVIEW_PHOTOS = {
+    'peonia/rosa': 'assets/img/p-amanecer.jpg', 'peonia/blush': 'assets/img/p-novia.jpg', 'peonia/vino': 'assets/img/p-peoniareal.jpg',
+    'rosa/vino': 'assets/img/p-vinooro.jpg', 'rosa/rosa': 'assets/img/b-rosa-rosa.jpg', 'rosa/blanco': 'assets/img/p-corporativo.jpg', 'rosa/durazno': 'assets/img/p-durazno.jpg',
+    'tulipan/rosa': 'assets/img/p-tulipanes.jpg', 'tulipan/blanco': 'assets/img/p-silvestre.jpg', 'tulipan/vino': 'assets/img/b-tulipan-vino.jpg', 'tulipan/amarillo': 'assets/img/b-tulipan-amarillo.jpg',
+    'lirio/crema': 'assets/img/p-lirio.jpg', 'lirio/rosa': 'assets/img/p-condolencia.jpg',
+    'hortensia/rosa': 'assets/img/p-hortensia.jpg', 'hortensia/azul': 'assets/img/p-azul.jpg', 'hortensia/blanco': 'assets/img/b-hortensia-blanco.jpg',
+    'eucalipto/verde': 'assets/img/b-filler.jpg', 'gypsophila/blanco': 'assets/img/b-filler.jpg',
+  };
+
   const MARQUEE = { es: ['Bodas', 'Galas', 'Lanzamientos', 'Cumpleaños', 'Aniversarios', 'Nacimientos', 'Condolencias', 'Oficinas', 'Cenas privadas', 'Bautizos'], en: ['Weddings', 'Galas', 'Launches', 'Birthdays', 'Anniversaries', 'New babies', 'Sympathy', 'Offices', 'Private dinners', 'Christenings'] };
 
-  return { CONFIG, T, FLOWERS, PALETTES, VARIANT_NAMES, WRAPS, RIBBONS, EXTRAS, ZONES, SLOTS, OCC, SIZES, PRODUCTS, PORTFOLIO, PROCESS, SERVICES, TESTIMONIALS, FAQS, MARQUEE };
+  return { CONFIG, T, FLOWERS, PALETTES, VARIANT_NAMES, WRAPS, RIBBONS, EXTRAS, ZONES, SLOTS, OCC, SIZES, PRODUCTS, PORTFOLIO, PROCESS, SERVICES, TESTIMONIALS, FAQS, MARQUEE, PREVIEW_PHOTOS };
 })();

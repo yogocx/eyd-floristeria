@@ -114,7 +114,7 @@ window.App = (function () {
     if (window.Order) window.Order.openDrawer();
   }
   function itemName(item) { return item.pid ? L(D.PRODUCTS.find((p) => p.id === item.pid).name) : t('custom_name'); }
-  function itemThumb(item) { const p = item.pid ? D.PRODUCTS.find((x) => x.id === item.pid) : null; return p && p.img ? `<img src="${p.img}" alt="">` : B.svg(item.spec, ''); }
+  function itemThumb(item) { const p = item.pid ? D.PRODUCTS.find((x) => x.id === item.pid) : null; const src = item.photo || (p && p.img); return src ? `<img src="${src}" alt="">` : B.svg(item.spec, ''); }
   function itemDetail(item) {
     if (item.pid) return t('size_' + item.size) + ' · ' + B.count(item.spec) + ' ' + t('stems');
     const c = item.custom;
@@ -155,6 +155,10 @@ window.App = (function () {
     return { stems, sum, extras, total: stems ? D.CONFIG.baseFee + sum + extras : 0 };
   }
   const sizeKey = (n) => n <= 8 ? 'peq' : n <= 14 ? 'med' : n <= 22 ? 'gra' : 'del';
+  const FOCAL = { peonia: 0, hortensia: 1, lirio: 2, rosa: 3, tulipan: 4, gypsophila: 5, eucalipto: 6 };
+  function dominantType() { const c = b().counts; return Object.keys(D.FLOWERS).filter((k) => c[k] > 0).sort((x, y) => (c[y] - c[x]) || (FOCAL[x] - FOCAL[y]))[0] || null; }
+  function previewPhoto() { const k = dominantType(); if (!k) return null; return D.PREVIEW_PHOTOS[k + '/' + b().variants[k]] || D.PREVIEW_PHOTOS[k + '/' + D.FLOWERS[k].variants[0]] || null; }
+  function dominantLabel() { const k = dominantType(); if (!k) return ''; const f = D.FLOWERS[k]; return L(f.name) + (f.variants.length > 1 ? ' ' + L(D.VARIANT_NAMES[b().variants[k]]) : ''); }
   function saveBuilder() { store.set('eyd.builder', b()); }
 
   function renderBuilder() {
@@ -182,7 +186,17 @@ window.App = (function () {
       const tones = $('.tones', row); if (tones) { tones.hidden = n === 0; $$('.tone', tones).forEach((tb) => tb.setAttribute('aria-pressed', tb.dataset.v === b().variants[k])); }
     });
     const stage = $('#stage');
-    if (tot.stems) stage.innerHTML = B.svg(builderSpec(), t('custom_name')); else stage.innerHTML = `<p class="stage-empty">${esc(t('b_empty'))}</p>`;
+    if (tot.stems) {
+      const photo = previewPhoto(), label = dominantLabel(), sketch = B.svg(builderSpec(), t('b_sketch'));
+      const img = $('.stage-photo', stage);
+      if (img && img.getAttribute('src') === photo) {
+        img.alt = t('b_ref') + ': ' + label;
+        $('.stage-sketch', stage).innerHTML = sketch;
+        $('.stage-tag', stage).textContent = t('b_ref') + ' · ' + label;
+      } else {
+        stage.innerHTML = (photo ? `<img class="stage-photo" src="${photo}" alt="${esc(t('b_ref'))}: ${esc(label)}">` : '') + `<div class="stage-sketch" title="${esc(t('b_sketch'))}">${sketch}</div><span class="stage-tag">${esc(t('b_ref'))} · ${esc(label)}</span>`;
+      }
+    } else stage.innerHTML = `<p class="stage-empty">${esc(t('b_empty'))}</p>`;
     $('#pvSize').textContent = tot.stems ? t('size_' + sizeKey(tot.stems)) + ' · ' + tot.stems + ' ' + t(tot.stems === 1 ? 'stem' : 'stems') : t('custom_name');
     $('#pvDetail').textContent = tot.stems ? specSummary(builderSpec()) + ' · ' + t('b_base') + ' ' + money(D.CONFIG.baseFee) : '';
     $('#pvPrice').textContent = money(tot.total);
@@ -212,7 +226,7 @@ window.App = (function () {
   function clearBuilder() { Object.keys(D.FLOWERS).forEach((k) => { b().counts[k] = 0; }); b().extras = ['tarjeta']; b().msg = ''; renderBuilder(); }
   function addCustom() {
     const tot = builderTotals(); if (!tot.stems) return;
-    addToCart({ pid: null, qty: 1, unit: tot.total, size: null, spec: builderSpec(), custom: { counts: Object.assign({}, b().counts), variants: Object.assign({}, b().variants), wrap: b().wrap, ribbon: b().ribbon, extras: b().extras.slice(), msg: b().msg } });
+    addToCart({ pid: null, qty: 1, unit: tot.total, size: null, spec: builderSpec(), photo: previewPhoto(), custom: { counts: Object.assign({}, b().counts), variants: Object.assign({}, b().variants), wrap: b().wrap, ribbon: b().ribbon, extras: b().extras.slice(), msg: b().msg } });
   }
 
   /* ---------- Idioma ---------- */
