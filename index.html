@@ -2,18 +2,393 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>E&amp;D Floristería</title>
-<style>
-  body{margin:0;min-height:100vh;display:grid;place-items:center;background:#FBF4F1;color:#3A2230;font-family:Georgia,serif;text-align:center;padding:24px}
-  img{max-width:min(420px,80vw);border-radius:50%}
-  p{font-style:italic;color:#9E1B47}
-</style>
+<meta name="description" content="E&D Floristería: ramos y arreglos florales hechos a mano, bodas, eventos corporativos y entrega el mismo día. Flores que enamoran, detalles que perduran.">
+<meta property="og:title" content="E&D Floristería">
+<meta property="og:description" content="Flores que enamoran, detalles que perduran.">
+<meta property="og:image" content="assets/logo.webp">
+<link rel="icon" href="assets/logo.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Jost:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div>
-  <img src="assets/logo.webp" alt="E&amp;D Floristería">
-  <p>Sitio en construcción · Flores que enamoran, detalles que perduran.</p>
+
+<a class="skip" href="#coleccion" data-t="skip">Ir al contenido</a>
+
+<header class="top" id="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#inicio" aria-label="E&D Floristería, inicio">
+      <span class="wm"><b class="e">E</b><i class="amp">&amp;</i><b class="d">D</b></span>
+      <span class="wm-sub">Floristería</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a href="#coleccion" data-t="nav_col">Colección</a>
+      <a href="#taller" data-t="nav_taller">Arma tu ramo</a>
+      <a href="#eventos" data-t="nav_eventos">Bodas y eventos</a>
+      <a href="#portafolio" data-t="nav_port">Portafolio</a>
+      <a href="#contacto" data-t="nav_contacto">Contacto</a>
+    </nav>
+    <div class="top-tools">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn btn-gold btn-sm hide-sm" href="#contacto" data-t="nav_cta">Cuéntanos tu fecha</a>
+      <button type="button" class="cart-btn" id="cartBtn" aria-label="Tu pedido" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18l-1.6 10.2a2 2 0 0 1-2 1.8H6.6a2 2 0 0 1-2-1.8Z"/><path d="M8 9V7a4 4 0 0 1 8 0v2"/></svg>
+        <span class="badge" id="cartCount" hidden>0</span>
+      </button>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <canvas id="petals" aria-hidden="true"></canvas>
+    <div class="wrap hero-in">
+      <div class="logo-plate">
+        <img src="assets/logo.webp" width="1254" height="1254" alt="E&D Floristería. Flores que enamoran, detalles que perduran." fetchpriority="high">
+      </div>
+      <p class="script hero-eyebrow" data-t="hero_eyebrow">Floristería artesanal</p>
+      <h1 class="display" data-t="hero_title">Flores que enamoran, detalles que perduran.</h1>
+      <p class="lead" data-t="hero_lead">Ramos hechos a mano con flores frescas de temporada, diseño floral para bodas y eventos corporativos, y entrega el mismo día en tu ciudad.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contacto" data-t="hero_cta1">Cuéntanos tu fecha</a>
+        <a class="btn btn-ghost" href="#coleccion" data-t="hero_cta2">Ver colección</a>
+      </div>
+    </div>
+    <div class="wrap trust">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span id="deliveryHint">Entrega hoy si pides antes de las 13:00</span>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-4-3-8-6.5-8-11a4 4 0 0 1 7-2.6A4 4 0 0 1 20 10c0 4.5-4 8-8 11Z"/></svg>
+        <span data-t="trust2">Flores frescas de temporada</span>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20c0-6 4-10 8-10s8 4 8 10"/><path d="M12 10V4"/><path d="M9 6c2 0 3-1 3-2 0 1 1 2 3 2"/></svg>
+        <span data-t="trust3">Diseño hecho a tu medida</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats" aria-label="Cifras">
+    <div class="wrap stats-in" id="stats"></div>
+  </section>
+
+  <!-- SPLIT: BODAS / CORPORATIVO -->
+  <section class="section split-sec" id="eventos">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="script" data-t="ev_eyebrow">Diseño floral para eventos</p>
+        <h2 class="display" data-t="ev_title">Dos maneras de trabajar contigo</h2>
+      </div>
+      <div class="split">
+        <article class="split-card">
+          <div class="split-art" data-art="boda"></div>
+          <div class="split-body">
+            <h3 class="display" data-t="ev_boda_t">Bodas</h3>
+            <p data-t="ev_boda_p">Ramo de novia, ceremonia, centros de mesa e instalaciones florales que cuentan la historia de la pareja. Nos encargamos del diseño, la producción, el montaje y el retiro.</p>
+            <a class="link-caps" href="#contacto" data-evt="boda" data-t="ev_boda_cta">Explorar bodas</a>
+          </div>
+        </article>
+        <article class="split-card">
+          <div class="split-art" data-art="corp"></div>
+          <div class="split-body">
+            <h3 class="display" data-t="ev_corp_t">Corporativo</h3>
+            <p data-t="ev_corp_p">Lanzamientos, galas, cenas ejecutivas y recepciones con florales alineados a tu marca. Producción escalable, logística resuelta y facturación mensual.</p>
+            <a class="link-caps" href="#contacto" data-evt="corporativo" data-t="ev_corp_cta">Explorar corporativo</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+  <!-- COLECCIÓN -->
+  <section class="section" id="coleccion">
+    <div class="wrap">
+      <div class="sec-head sec-head-row">
+        <div>
+          <p class="script" data-t="col_eyebrow">Entrega de flores</p>
+          <h2 class="display" data-t="col_title">Ramos para cada ocasión</h2>
+          <p class="sec-lead" data-t="col_lead">Filtra por ocasión, toca un ramo para verlo de cerca y agrégalo a tu pedido. Todos se entregan el mismo día si pides antes de las 13:00.</p>
+        </div>
+        <label class="sort">
+          <span data-t="col_sort">Ordenar</span>
+          <select id="sortSel">
+            <option value="rec" data-t="sort_rec">Recomendados</option>
+            <option value="asc" data-t="sort_asc">Precio: menor a mayor</option>
+            <option value="desc" data-t="sort_desc">Precio: mayor a menor</option>
+          </select>
+        </label>
+      </div>
+      <div class="chips" id="chips" role="tablist" aria-label="Ocasión"></div>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="gridEmpty" hidden data-t="col_empty">Aún no hay ramos en esta categoría.</p>
+    </div>
+  </section>
+
+  <!-- TALLER / BUILDER -->
+  <section class="section taller" id="taller">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="script" data-t="b_eyebrow">Arma tu ramo</p>
+        <h2 class="display" data-t="b_title">Tu ramo, tallo por tallo</h2>
+        <p class="sec-lead" data-t="b_lead">Elige flores, papel y listón. La vista previa y el precio cambian al instante.</p>
+      </div>
+      <div class="builder">
+        <div class="preview">
+          <div class="stage" id="stage"></div>
+          <div class="preview-meta">
+            <div>
+              <div class="pv-size" id="pvSize">Ramo mediano</div>
+              <div class="pv-detail" id="pvDetail"></div>
+            </div>
+            <div class="pv-price" id="pvPrice">$0</div>
+          </div>
+          <div class="pv-actions">
+            <button type="button" class="btn btn-outline btn-sm" id="surpriseBtn" data-t="b_surprise">Sorpréndeme</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="clearBtn" data-t="b_clear">Empezar de nuevo</button>
+          </div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h3><span class="n">1.</span><span data-t="b_step1">Elige tus flores</span></h3>
+            <div class="flower-list" id="flowerList"></div>
+          </div>
+          <div class="step">
+            <h3><span class="n">2.</span><span data-t="b_step2">Papel</span></h3>
+            <div class="swatches" id="wrapList"></div>
+          </div>
+          <div class="step">
+            <h3><span class="n">3.</span><span data-t="b_step3">Listón</span></h3>
+            <div class="swatches" id="ribbonList"></div>
+          </div>
+          <div class="step">
+            <h3><span class="n">4.</span><span data-t="b_step4">Extras</span></h3>
+            <div class="extras" id="extraList"></div>
+          </div>
+          <div class="step">
+            <h3><span class="n">5.</span><span data-t="b_msg">Mensaje para la tarjeta</span></h3>
+            <div class="field">
+              <textarea id="cardMsg" rows="3" maxlength="140" data-t-ph="b_msgph" placeholder="Escribe algo bonito…"></textarea>
+              <div class="hint"><span id="msgCount">0</span>/140</div>
+            </div>
+          </div>
+          <div class="step-cta">
+            <button type="button" class="btn btn-primary btn-lg" id="addCustomBtn"><span data-t="b_add">Agregar al carrito</span> · <span id="addCustomPrice">$0</span></button>
+            <p class="hint" data-t="b_hint">Precio final confirmado por WhatsApp según disponibilidad del día.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTAFOLIO -->
+  <section class="section dark" id="portafolio">
+    <div class="wrap">
+      <div class="sec-head sec-head-row">
+        <div>
+          <p class="script" data-t="pf_eyebrow">Portafolio</p>
+          <h2 class="display" data-t="pf_title">Algunos de nuestros trabajos</h2>
+        </div>
+        <div class="car-nav">
+          <button type="button" class="round" id="pfPrev" aria-label="Anterior">‹</button>
+          <button type="button" class="round" id="pfNext" aria-label="Siguiente">›</button>
+        </div>
+      </div>
+      <div class="pf-track" id="pfTrack" tabindex="0"></div>
+      <p class="fineprint" data-t="pf_note">Las ilustraciones representan las paletas de cada proyecto. Las fotografías del portafolio se agregan al publicar.</p>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="section" id="proceso">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="script" data-t="pr_eyebrow">Cómo trabajamos</p>
+        <h2 class="display" data-t="pr_title">Un proceso que se adapta a tu evento</h2>
+      </div>
+      <ol class="process" id="process"></ol>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="section soft" id="servicios">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="script" data-t="srv_eyebrow">Servicios</p>
+        <h2 class="display" data-t="srv_title">Más que un ramo</h2>
+      </div>
+      <div class="services" id="services"></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="section dark" id="testimonios">
+    <div class="wrap narrow">
+      <div class="sec-head center">
+        <p class="script" data-t="tst_eyebrow">Testimonios</p>
+        <h2 class="display" data-t="tst_title">Lo que dicen quienes ya regalaron flores</h2>
+      </div>
+      <div class="tst" id="tst">
+        <div class="tst-track" id="tstTrack"></div>
+        <div class="tst-ctl">
+          <button type="button" class="round" id="tstPrev" aria-label="Anterior">‹</button>
+          <div class="dots" id="tstDots"></div>
+          <button type="button" class="round" id="tstNext" aria-label="Siguiente">›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="preguntas">
+    <div class="wrap narrow">
+      <div class="sec-head">
+        <p class="script" data-t="faq_eyebrow">Preguntas frecuentes</p>
+        <h2 class="display" data-t="faq_title">Antes de pedir</h2>
+      </div>
+      <div class="faq" id="faq"></div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="section contact" id="contacto">
+    <div class="wrap contact-in">
+      <div class="contact-info">
+        <p class="script" data-t="ct_eyebrow">Cuéntanos tu fecha</p>
+        <h2 class="display" data-t="ct_title">Cada evento es único. Empecemos por el tuyo.</h2>
+        <p class="sec-lead" data-t="ct_lead">Comparte la fecha, el lugar y tu idea. Te respondemos con una propuesta y una cotización detallada.</p>
+        <dl class="info-list" id="infoList"></dl>
+        <div class="hours" id="hours"></div>
+      </div>
+      <form class="inquiry" id="inquiry" novalidate>
+        <div class="grid2">
+          <div class="field"><label for="qName" data-t="f_name">Nombre</label><input id="qName" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="qPhone" data-t="f_phone">Teléfono</label><input id="qPhone" name="phone" type="tel" autocomplete="tel" required></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="qDate" data-t="f_date">Fecha del evento</label><input id="qDate" name="date" type="date"></div>
+          <div class="field"><label for="qType" data-t="f_type">Tipo de evento</label>
+            <select id="qType" name="type">
+              <option value="boda" data-t="f_t_boda">Boda</option>
+              <option value="corporativo" data-t="f_t_corp">Evento corporativo</option>
+              <option value="social" data-t="f_t_social">Evento social</option>
+              <option value="suscripcion" data-t="f_t_sus">Suscripción</option>
+              <option value="condolencias" data-t="f_t_cond">Condolencias</option>
+              <option value="otro" data-t="f_t_otro">Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="qVenue" data-t="f_venue">Lugar</label><input id="qVenue" name="venue"></div>
+          <div class="field"><label for="qGuests" data-t="f_guests">Invitados</label><input id="qGuests" name="guests" type="number" min="1" inputmode="numeric"></div>
+        </div>
+        <div class="field"><label for="qMsg" data-t="f_msg">Cuéntanos tu idea</label><textarea id="qMsg" name="msg" rows="4"></textarea></div>
+        <div class="form-actions">
+          <a class="btn btn-primary" id="inqSend" href="#" target="_blank" rel="noopener" data-t="f_send">Enviar por WhatsApp</a>
+          <button type="button" class="btn btn-outline" id="inqCopy" data-t="f_copy">Copiar mensaje</button>
+        </div>
+        <p class="hint" id="inqErr" hidden data-t="f_err">Escribe tu nombre y teléfono para que podamos responderte.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div class="foot-brand">
+      <img src="assets/logo.webp" alt="" width="88" height="88" class="foot-logo">
+      <p class="script" data-t="foot_tag">Flores que enamoran, detalles que perduran.</p>
+    </div>
+    <nav class="foot-nav" aria-label="Pie de página">
+      <a href="#coleccion" data-t="nav_col">Colección</a>
+      <a href="#taller" data-t="nav_taller">Arma tu ramo</a>
+      <a href="#eventos" data-t="nav_eventos">Bodas y eventos</a>
+      <a href="#preguntas" data-t="faq_eyebrow">Preguntas frecuentes</a>
+      <a href="#contacto" data-t="nav_contacto">Contacto</a>
+    </nav>
+    <div class="foot-social" id="footSocial"></div>
+  </div>
+  <div class="wrap foot-copy"><span>© <span id="year"></span> E&amp;D Floristería.</span> <span data-t="foot_rights">Todos los derechos reservados.</span></div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="scrim" id="drawerScrim"></div>
+  <aside class="panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <header>
+      <h2 class="display" id="drawerTitle"><span data-t="cart_title">Tu pedido</span> <span class="count" id="drawerCount"></span></h2>
+      <button type="button" class="round" id="drawerClose" aria-label="Cerrar">×</button>
+    </header>
+    <div class="items" id="cartItems"></div>
+    <div class="cart-forms" id="cartForms">
+      <h3 class="caps" data-t="cart_delivery">Entrega</h3>
+      <label class="check"><input type="checkbox" id="pickup"> <span data-t="cart_pickup">Recoger en tienda</span></label>
+      <div class="grid2" id="deliveryFields">
+        <div class="field"><label for="zone" data-t="cart_zone">Zona</label><select id="zone"></select></div>
+        <div class="field"><label for="slot" data-t="cart_slot">Horario</label><select id="slot"></select></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="date" data-t="cart_date">Fecha</label><input id="date" type="date"></div>
+        <div class="field"><label for="cPhone" data-t="cart_phone">Tu teléfono</label><input id="cPhone" type="tel" autocomplete="tel"></div>
+      </div>
+      <div class="field"><label for="cName" data-t="cart_name">Tu nombre</label><input id="cName" autocomplete="name"></div>
+      <div class="field" id="addrField"><label for="cAddr" data-t="cart_addr">Dirección de entrega</label><input id="cAddr" autocomplete="street-address"></div>
+      <div class="field"><label for="cCard" data-t="cart_card">Mensaje de la tarjeta</label><input id="cCard" maxlength="140"></div>
+    </div>
+    <footer>
+      <div class="totals" id="totals"></div>
+      <a class="btn btn-primary btn-lg" id="waSend" href="#" target="_blank" rel="noopener" data-t="cart_send">Pedir por WhatsApp</a>
+      <button type="button" class="btn btn-outline" id="copyOrder" data-t="cart_copy">Copiar pedido</button>
+      <p class="hint" data-t="cart_note">Confirmamos disponibilidad y pago por WhatsApp. No se cobra nada en esta página.</p>
+    </footer>
+  </aside>
 </div>
+
+<!-- QUICK VIEW -->
+<dialog class="qv" id="qv" aria-labelledby="qvName">
+  <button type="button" class="round qv-close" id="qvClose" aria-label="Cerrar">×</button>
+  <div class="qv-art" id="qvArt"></div>
+  <div class="qv-body">
+    <p class="caps" id="qvOcc"></p>
+    <h3 class="display" id="qvName"></h3>
+    <p id="qvDesc"></p>
+    <p class="qv-flowers" id="qvFlowers"></p>
+    <div class="qv-row">
+      <span class="lbl" data-t="qv_size">Tamaño</span>
+      <div class="seg" id="qvSizes" role="radiogroup"></div>
+    </div>
+    <div class="qv-row">
+      <span class="lbl" data-t="qv_qty">Cantidad</span>
+      <div class="stepper"><button type="button" id="qvMinus" aria-label="Menos">−</button><output id="qvQty">1</output><button type="button" id="qvPlus" aria-label="Más">+</button></div>
+    </div>
+    <div class="qv-actions">
+      <button type="button" class="btn btn-primary" id="qvAdd"><span data-t="qv_add">Agregar al carrito</span> · <span id="qvPrice"></span></button>
+      <button type="button" class="btn btn-ghost" id="qvEdit" data-t="qv_edit">Personalizar en el taller</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="bouquet.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
