@@ -25,10 +25,11 @@ window.EYD = (function () {
       { d: { es: 'Sábado', en: 'Saturday' }, h: '9:00 – 15:00' },
       { d: { es: 'Domingo', en: 'Sunday' }, h: { es: 'Cerrado', en: 'Closed' } },
     ],
+    // Promesas de servicio (no cifras históricas): un negocio nuevo puede cumplirlas desde el primer día.
     stats: [
-      { n: '+2,500', l: { es: 'ramos entregados', en: 'bouquets delivered' } },
-      { n: '12', l: { es: 'años haciendo flores', en: 'years making flowers' } },
-      { n: '4.9 ★', l: { es: 'calificación de clientes', en: 'customer rating' } },
+      { n: { es: 'Mismo día', en: 'Same day' }, l: { es: 'entrega en tu ciudad si pides antes de las 13:00', en: 'delivery across the city when you order before 1 pm' } },
+      { n: { es: 'Hecho a mano', en: 'Hand-tied' }, l: { es: 'cada ramo se arma el día de la entrega con flor de temporada', en: 'every bouquet is made the day it ships, with seasonal flowers' } },
+      { n: { es: '< 1 hora', en: '< 1 hour' }, l: { es: 'respuesta a cotizaciones por WhatsApp en horario de atención', en: 'reply to WhatsApp quotes during opening hours' } },
     ],
   };
 

@@ -50,7 +50,7 @@ window.App = (function () {
 
   /* ---------- Cifras y cinta ---------- */
   function renderStats() {
-    $('#stats').innerHTML = D.CONFIG.stats.map((s) => `<div class="stat"><div class="stat-n display">${esc(s.n)}</div><div class="stat-l">${esc(L(s.l))}</div></div>`).join('');
+    $('#stats').innerHTML = D.CONFIG.stats.map((s) => `<div class="stat"><div class="stat-n display">${esc(L(s.n))}</div><div class="stat-l">${esc(L(s.l))}</div></div>`).join('');
   }
   function renderMarquee() {
     const words = D.MARQUEE[state.lang] || D.MARQUEE.es;
