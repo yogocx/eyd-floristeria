@@ -209,9 +209,16 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .stage { position: relative; aspect-ratio: 1 / 1.05; max-width: 100%; border-radius: 18px; background: radial-gradient(120% 90% at 50% 100%, var(--rose-3), var(--surface-2) 70%); display: grid; place-items: center; overflow: hidden; }
 .stage-photo { width: 100%; height: 100%; object-fit: cover; animation: stage-in .45s ease; }
 @keyframes stage-in { from { opacity: 0; } to { opacity: 1; } }
-.stage-sketch { position: absolute; right: 12px; bottom: 12px; width: 26%; aspect-ratio: 300 / 380; background: color-mix(in srgb, var(--surface) 88%, transparent); border: 1px solid var(--line); border-radius: 12px; padding: 4px; box-shadow: 0 10px 24px -14px rgba(0,0,0,.5); }
-.stage-sketch svg { width: 100%; height: 100%; }
-.stage-tag { position: absolute; left: 12px; bottom: 12px; background: rgba(42,21,32,.72); color: #fff; font-size: .75rem; letter-spacing: .02em; padding: 5px 11px; border-radius: 999px; max-width: 65%; }
+.stage-3d { position: absolute; inset: 0; }
+.stage-canvas { display: block; width: 100% !important; height: 100% !important; touch-action: pan-y; cursor: grab; }
+.stage-canvas.grabbing { cursor: grabbing; }
+.stage-inset { position: absolute; right: 12px; bottom: 12px; width: 26%; aspect-ratio: 4 / 5; background: color-mix(in srgb, var(--surface) 88%, transparent); border: 1px solid var(--line); border-radius: 12px; padding: 4px; box-shadow: 0 10px 24px -14px rgba(0,0,0,.5); overflow: hidden; }
+.stage-inset svg { width: 100%; height: 100%; }
+.stage-inset img { width: 100%; height: 100%; object-fit: cover; border-radius: 9px; }
+.stage-tag { position: absolute; left: 12px; bottom: 12px; background: rgba(42,21,32,.72); color: #fff; font-size: .75rem; letter-spacing: .02em; padding: 5px 11px; border-radius: 999px; max-width: 65%; pointer-events: none; }
+.stage-hint { position: absolute; left: 12px; top: 12px; background: color-mix(in srgb, var(--surface) 80%, transparent); color: var(--ink-2); font-size: .72rem; letter-spacing: .04em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; pointer-events: none; }
+.stage.is-empty .stage-3d, .stage.is-empty .stage-photo, .stage.is-empty .stage-inset, .stage.is-empty .stage-tag, .stage.is-empty .stage-hint { visibility: hidden; }
+.stage-empty { position: relative; z-index: 1; }
 .stage-empty { color: var(--ink-3); text-align: center; padding: 24px; max-width: 26ch; }
 .preview-meta { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
 .pv-size { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.4rem; font-weight: 600; line-height: 1.1; }

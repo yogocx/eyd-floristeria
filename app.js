@@ -185,18 +185,7 @@ window.App = (function () {
       $('output', row).textContent = n;
       const tones = $('.tones', row); if (tones) { tones.hidden = n === 0; $$('.tone', tones).forEach((tb) => tb.setAttribute('aria-pressed', tb.dataset.v === b().variants[k])); }
     });
-    const stage = $('#stage');
-    if (tot.stems) {
-      const photo = previewPhoto(), label = dominantLabel(), sketch = B.svg(builderSpec(), t('b_sketch'));
-      const img = $('.stage-photo', stage);
-      if (img && img.getAttribute('src') === photo) {
-        img.alt = t('b_ref') + ': ' + label;
-        $('.stage-sketch', stage).innerHTML = sketch;
-        $('.stage-tag', stage).textContent = t('b_ref') + ' · ' + label;
-      } else {
-        stage.innerHTML = (photo ? `<img class="stage-photo" src="${photo}" alt="${esc(t('b_ref'))}: ${esc(label)}">` : '') + `<div class="stage-sketch" title="${esc(t('b_sketch'))}">${sketch}</div><span class="stage-tag">${esc(t('b_ref'))} · ${esc(label)}</span>`;
-      }
-    } else stage.innerHTML = `<p class="stage-empty">${esc(t('b_empty'))}</p>`;
+    renderStage(tot);
     $('#pvSize').textContent = tot.stems ? t('size_' + sizeKey(tot.stems)) + ' · ' + tot.stems + ' ' + t(tot.stems === 1 ? 'stem' : 'stems') : t('custom_name');
     $('#pvDetail').textContent = tot.stems ? specSummary(builderSpec()) + ' · ' + t('b_base') + ' ' + money(D.CONFIG.baseFee) : '';
     $('#pvPrice').textContent = money(tot.total);
@@ -204,6 +193,33 @@ window.App = (function () {
     $('#addCustomBtn').disabled = !tot.stems;
     $('#msgCount').textContent = (b().msg || '').length;
     saveBuilder();
+  }
+  let stageMode = null; // '3d' cuando hay WebGL, 'photo' como respaldo
+  function ensureStage() {
+    const stage = $('#stage');
+    if (stageMode) return stage;
+    stageMode = (window.Bouquet3D && window.Bouquet3D.ok()) ? '3d' : 'photo';
+    stage.innerHTML = (stageMode === '3d' ? '<div class="stage-3d" id="stage3d"></div>' : '<img class="stage-photo" id="stagePhoto" alt="">')
+      + '<div class="stage-inset" id="stageInset"></div><span class="stage-tag" id="stageTag"></span>'
+      + (stageMode === '3d' ? '<span class="stage-hint" id="stageHint"></span>' : '')
+      + '<p class="stage-empty" id="stageEmpty" hidden></p>';
+    if (stageMode === '3d') window.Bouquet3D.mount($('#stage3d'));
+    return stage;
+  }
+  function renderStage(tot) {
+    const stage = ensureStage(), empty = $('#stageEmpty');
+    if (!tot.stems) { stage.classList.add('is-empty'); empty.hidden = false; empty.textContent = t('b_empty'); if (stageMode === '3d') window.Bouquet3D.update({ items: [] }); return; }
+    stage.classList.remove('is-empty'); empty.hidden = true;
+    const photo = previewPhoto(), label = dominantLabel(), inset = $('#stageInset');
+    if (stageMode === '3d') {
+      window.Bouquet3D.update(builderSpec());
+      if (inset.dataset.src !== (photo || '')) { inset.innerHTML = photo ? `<img src="${photo}" alt="">` : ''; inset.dataset.src = photo || ''; }
+      $('#stageHint').textContent = t('b_drag');
+    } else {
+      const img = $('#stagePhoto'); if (img.getAttribute('src') !== photo) img.src = photo; img.alt = t('b_ref') + ': ' + label;
+      inset.innerHTML = B.svg(builderSpec(), t('b_sketch'));
+    }
+    $('#stageTag').textContent = t('b_ref') + ' · ' + label;
   }
   function setCount(k, n) { b().counts[k] = Math.max(0, Math.min(12, n)); const total = Object.values(b().counts).reduce((a, v) => a + v, 0); if (total > 40) b().counts[k] -= total - 40; updateBuilder(); }
   function loadSpec(spec) {
