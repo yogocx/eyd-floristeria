@@ -349,6 +349,9 @@ h3.display { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
 .foot-social a { display: inline-flex; align-items: center; gap: 8px; color: var(--on-dark); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
 .foot-social svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; }
 .foot-copy { display: flex; flex-wrap: wrap; gap: 6px; padding-block: 18px calc(18px + env(safe-area-inset-bottom, 0px)); font-size: .85rem; color: var(--on-dark-2); }
+.foot-copy .powered-by { flex-basis: 100%; display: inline-flex; align-items: center; gap: .6rem; margin-top: 8px; font-size: .8rem; color: var(--on-dark-2); text-decoration: none; }
+.foot-copy .powered-by img { height: 13px; width: auto; display: block; filter: brightness(0) invert(1); opacity: .75; }
+.foot-copy .powered-by:hover img { opacity: 1; }
 
 /* Carrito */
 .drawer { position: fixed; inset: 0; z-index: 80; pointer-events: none; }
